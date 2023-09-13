@@ -1,4 +1,6 @@
 import g from "./Globals.js";
+import Box from "./objects/box.js";
+import circle from "./objects/circle.js";
 
 export default class {
     projectiles = [];
@@ -7,6 +9,7 @@ export default class {
     last_position = {};
     canvas_width = 0;
     canvas_height = 0;
+    objects = [];
 
     drawTriangle(size, position, color) {
         let canvas = g().mainCanvas
@@ -49,13 +52,11 @@ export default class {
     }
 
     drawCircle(x, y, radius, color) {
-        let ctx = g().mainCanvas.getContext('2d');
+        let ctx = g().ctx();
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, 2 * Math.PI);
         ctx.fillStyle = color;
-        ctx.strokeStyle = color;
         ctx.fill();
-        ctx.stroke();
     }
 
     drawPlayer() {
@@ -84,6 +85,7 @@ export default class {
             xm = x + w / 2,       // x-middle
             ym = y + h / 2;       // y-middle
 
+        ctx.fillStyle = 'black';
         ctx.beginPath();
         ctx.moveTo(x, ym);
         ctx.bezierCurveTo(x, ym - oy, xm - ox, y, xm, y);
@@ -91,21 +93,18 @@ export default class {
         ctx.bezierCurveTo(xe, ym + oy, xm + ox, ye, xm, ye);
         ctx.bezierCurveTo(xm - ox, ye, x, ym + oy, x, ym);
         ctx.fillStyle = color;
-        ctx.strokeStyle = color;
         ctx.fill();
-        ctx.stroke();
         return false;
     }
 
     drawProjectiles() {
         this.projectiles.forEach((proj, index) => {
-            console.log(proj);
             let dead = false
             if (proj.shape === 'bullet') {
-                proj.y = proj.y - ((proj.speed * proj.speed_rate) * Math.cos(proj.theta));
-                proj.x = proj.x + ((proj.speed * proj.speed_rate) * Math.sin(proj.theta));
-                console.log(proj.speed * proj.speed_rate,Math.cos(proj.theta));
-                dead = this.drawEllipse(
+                proj.y = proj.y + ((proj.speed * proj.speed_rate) * Math.sin(proj.theta));
+                proj.x = proj.x + ((proj.speed * proj.speed_rate) * Math.cos(proj.theta));
+
+                dead = this.isInBound(proj.x, proj.y) || this.drawEllipse(
                     proj.x,
                     proj.y,
                     proj.size,
@@ -115,9 +114,27 @@ export default class {
             }
 
             if (dead) {
-                this.projectiles.splice(index, 1);
+                this.deleteProjectile(index);
             }
         })
+    }
+
+    isInBound(x, y) {
+        let inBound = false;
+        this.objects.every(el => {
+            if (el.inBound(x, y)) {
+                console.log(el);
+                inBound = true;
+                return false;
+            }
+            return true;
+        })
+
+        return inBound;
+    }
+
+    deleteProjectile(index) {
+        this.projectiles.splice(index, 1);
     }
 
     drawWeapons() {
@@ -145,7 +162,6 @@ export default class {
     movePlayer() {
         const tracker = g().tracker;
         const keys = tracker.keys;
-        console.log(keys);
         if (!keys.length) return;
         const player = g().player;
         if (tracker.isKeyPressed('d')) {
@@ -165,12 +181,22 @@ export default class {
         }
     }
 
+    drawLevel() {
+        this.objects = [];
+        this.objects.push(new Box(200, 200, 200, 200, 'blue'));
+        this.objects.push(new circle(400, 400, 20, 'red'));
+        this.objects.forEach((el) => {
+            el.draw()
+        });
+    }
+
     drawGame() {
         const ctx = g().mainCanvas.getContext('2d');
         ctx.clearRect(0, 0, g().canvas.width, g().canvas.height);
         ctx.font = "36px serif";
         ctx.fillStyle = 'red';
         ctx.fillText("Inclination: " + g().player.weapon.theta, 10, 50);
+        this.drawLevel();
         this.movePlayer();
         this.drawPlayer();
         this.drawWeapons();

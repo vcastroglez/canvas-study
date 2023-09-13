@@ -11,6 +11,10 @@ class Globals {
         width: window.innerWidth,
         height: window.innerHeight
     }
+
+    ctx(){
+        return this.mainCanvas.getContext('2d');
+    }
 }
 
 let instance = null;

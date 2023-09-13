@@ -4,7 +4,7 @@ import globals from "./Globals.js";
 const default_player_movement_speed = {x:0.001,y:0.002};
 const default_player_size = 20;
 const default_player_shape = 'circle';
-const default_player_color = 'blue';
+const default_player_color = 'gray';
 const default_player_weapon = weapons.pistol;
 const default_player_position = {
     x: 0.5,//todo convert this to real x and y
