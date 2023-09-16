@@ -10,15 +10,15 @@ export default class {
     level_created = false;
 
     constructor() {
-        if(!this.level_created) this.buildLevel();
+        if (!this.level_created) this.buildLevel();
     }
 
-    drawTriangle(size, position, color) {
+    drawTriangle(x, y, size, color) {
         const ctx = g().ctx();
         const tip_angle = 45;
         const tip_size = 20;
         ctx.beginPath();
-        this.base_position = {x: canvas.width * position.x - (size / 2), y: canvas.height * position.y};
+        this.base_position = {x: canvas.width * x - (size / 2), y: canvas.height * y};
         this.fixBounds(this.base_position, canvas.width, canvas.height);
 
         this.tip_position = {
@@ -63,10 +63,10 @@ export default class {
     drawPlayer() {
         const player = g().player;
         if (player.shape === 'triangle') {
-            this.drawTriangle(player.size, player.position, player.color);
+            this.drawTriangle(player.position.x, player.position.y, player.size, player.color);
         }
         if (player.shape === 'circle') {
-            this.drawCircle(canvas.width * player.position.x, canvas.height * player.position.y, player.size, player.color);
+            this.drawCircle(player.position.x, player.position.y, player.size, player.color);
         }
     }
 
