@@ -24,5 +24,6 @@ export default class {
     }
 
     constructor() {
+        this.points = 0;
     }
 }

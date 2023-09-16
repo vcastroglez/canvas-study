@@ -14,7 +14,7 @@ export default class {
     constructor() {
         this.objects = [];
         // this.objects.push(new Box(200, 200, 200, 200, 'blue'));
-        this.objects.push(new circle(400, 400, 20, 'red',1,0.1,4));
+        this.objects.push(new circle(400, 400, 10, 'red',1,0.1,4));
     }
 
     drawTriangle(size, position, color) {
@@ -129,8 +129,8 @@ export default class {
         let inBound = false;
         this.objects.every(el => {
             if (el.inBound(x, y)) {
-                console.log(el);
                 inBound = true;
+                g().player.points++;
                 return false;
             }
             return true;
@@ -199,12 +199,22 @@ export default class {
         ctx.clearRect(0, 0, g().canvas.width, g().canvas.height);
         ctx.font = "36px serif";
         ctx.fillStyle = 'red';
-        ctx.fillText("Inclination: " + g().player.weapon.theta, 10, 50);
+        ctx.fillText("Points: " + g().player.points, 10, 50);
+        ctx.fillStyle = 'gray';
+        ctx.fillText("WASD te mueves y click disparas", 10, this.canvas_height - 50);
         this.drawLevel();
         this.movePlayer();
         this.drawPlayer();
         this.drawWeapons();
         this.drawProjectiles();
+    }
+
+    drawWin(){
+        const ctx = g().mainCanvas.getContext('2d');
+        ctx.clearRect(0, 0, g().canvas.width, g().canvas.height);
+        ctx.font = "40px serif";
+        ctx.fillStyle = 'green';
+        ctx.fillText("Felicidades te ganaste un cake comepinga", this.canvas_width/2 - 300, this.canvas_height/2);
     }
 }
 
