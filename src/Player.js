@@ -1,7 +1,7 @@
 import {weapons} from './Weapons.js';
 import globals from "./Globals.js";
 
-const default_player_movement_speed = {x:0.001,y:0.002};
+const default_player_movement_speed = {x:0.001,y:0.002};//todo quita la caca de porcientos estos
 const default_player_size = 20;
 const default_player_shape = 'circle';
 const default_player_color = 'gray';

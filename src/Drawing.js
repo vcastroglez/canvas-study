@@ -11,6 +11,12 @@ export default class {
     canvas_height = 0;
     objects = [];
 
+    constructor() {
+        this.objects = [];
+        // this.objects.push(new Box(200, 200, 200, 200, 'blue'));
+        this.objects.push(new circle(400, 400, 20, 'red',1,0.1,4));
+    }
+
     drawTriangle(size, position, color) {
         let canvas = g().mainCanvas
         const ctx = canvas.getContext('2d');
@@ -182,10 +188,8 @@ export default class {
     }
 
     drawLevel() {
-        this.objects = [];
-        this.objects.push(new Box(200, 200, 200, 200, 'blue'));
-        this.objects.push(new circle(400, 400, 20, 'red'));
         this.objects.forEach((el) => {
+            el.move();
             el.draw()
         });
     }
