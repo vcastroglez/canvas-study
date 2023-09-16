@@ -7,7 +7,7 @@ g().mainCanvas.setAttribute('height',g().canvas.height);
 g().tracker.trackPlayer();
 function frameDraw(){
     g().drawing.drawGame();
-    if(g().player.points>10){
+    if(g().player.points>9){
         g().drawing.drawWin();
         return;
     }
