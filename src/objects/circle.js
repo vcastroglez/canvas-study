@@ -1,4 +1,4 @@
-import globals from "../Globals.js";
+import globals, {canvas} from "../Globals.js";
 
 export default class {
     radius = 0;
@@ -6,6 +6,15 @@ export default class {
     y = 0;
     color = 'red';
 
+    /**
+     * @param {number} x
+     * @param {number} y
+     * @param {number} r redius
+     * @param {string} color
+     * @param xd direction in x
+     * @param yd direction in y
+     * @param s speed
+     */
     constructor(x, y, r, color, xd = 1, yd = 0, s = 5) {
         this.x = x;
         this.y = y;
@@ -14,6 +23,7 @@ export default class {
         this.speed = s;
         this.xDirection = xd;//1 or -1
         this.yDirection = yd;//1 or -1
+        this.pcc = false;//player can crash
     }
 
     inBound(x, y) {
@@ -24,11 +34,11 @@ export default class {
     }
 
     fixBounds() {
-        if (this.x < 0 || this.x > globals().drawing.canvas_width) {
+        if (this.x < 0 || this.x > canvas.width) {
             this.xDirection *= -1;
         }
 
-        if (this.y < 0 || this.y > globals().drawing.canvas_height) {
+        if (this.y < 0 || this.y > canvas.height) {
             this.yDirection *= -1;
         }
     }

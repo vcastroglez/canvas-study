@@ -1,7 +1,8 @@
 import {weapons} from './Weapons.js';
-import globals from "./Globals.js";
+import {canvas} from "./Globals.js";
+import g from "./Globals.js";
 
-const default_player_movement_speed = {x:0.001,y:0.002};//todo quita la caca de porcientos estos
+const default_player_movement_speed = {x: 0.001, y: 0.002};//todo quita la caca de porcientos estos
 const default_player_size = 20;
 const default_player_shape = 'circle';
 const default_player_color = 'gray';
@@ -20,10 +21,35 @@ export default class {
     movement_speed = default_player_movement_speed;
 
     getPosition() {
-        return {x: globals().canvas.width * this.position.x, y: globals().canvas.height * this.position.y}
+        return {x: canvas.width * this.position.x, y: canvas.height * this.position.y}
     }
 
     constructor() {
         this.points = 0;
+    }
+
+    move() {
+        const tracker = g().tracker;
+        const keys = tracker.keys;
+        if (!keys.length) return;
+        if (tracker.isKeyPressed('d')) {
+            this.position.x += this.movement_speed.x;
+        }
+
+        if (tracker.isKeyPressed('a')) {
+            this.position.x -= this.movement_speed.x;
+        }
+
+        if (tracker.isKeyPressed('s')) {
+            this.position.y += this.movement_speed.y
+        }
+
+        if (tracker.isKeyPressed('w')) {
+            this.position.y -= this.movement_speed.y
+        }
+
+        if (this.position.x < 0 || this.position.x > 1) {
+            g().tracker.keys = [];
+        }
     }
 }

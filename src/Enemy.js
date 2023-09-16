@@ -1,4 +1,4 @@
-import globals from "./Globals.js";
+import {canvas} from "./Globals.js";
 
 export default class {
     position = {
@@ -10,6 +10,6 @@ export default class {
     size = 20
 
     getPosition() {
-        return {x: globals().canvas.width * this.position.x, y: globals().canvas.height * this.position.y}
+        return {x: canvas.width * this.position.x, y: canvas.height * this.position.y}
     }
 }

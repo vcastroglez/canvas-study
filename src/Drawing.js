@@ -1,5 +1,4 @@
-import g from "./Globals.js";
-import Box from "./objects/box.js";
+import g, {canvas} from "./Globals.js";
 import circle from "./objects/circle.js";
 
 export default class {
@@ -7,24 +6,20 @@ export default class {
     base_position = {};
     tip_position = {};
     last_position = {};
-    canvas_width = 0;
-    canvas_height = 0;
     objects = [];
+    level_created = false;
 
     constructor() {
-        this.objects = [];
-        // this.objects.push(new Box(200, 200, 200, 200, 'blue'));
-        this.objects.push(new circle(400, 400, 10, '#e7b63f',1,0.1,4));
+        if(!this.level_created) this.buildLevel();
     }
 
     drawTriangle(size, position, color) {
-        let canvas = g().mainCanvas
-        const ctx = canvas.getContext('2d');
+        const ctx = g().ctx();
         const tip_angle = 45;
         const tip_size = 20;
         ctx.beginPath();
-        this.base_position = {x: this.canvas_width * position.x - (size / 2), y: this.canvas_height * position.y};
-        this.fixBounds(this.base_position, this.canvas_width, this.canvas_height);
+        this.base_position = {x: canvas.width * position.x - (size / 2), y: canvas.height * position.y};
+        this.fixBounds(this.base_position, canvas.width, canvas.height);
 
         this.tip_position = {
             x: this.base_position.x + (tip_size) * Math.cos(-tip_angle),
@@ -40,11 +35,11 @@ export default class {
     }
 
     fixBounds(base_position) {
-        if (base_position.x > this.canvas_width - 20) {
-            base_position.x = this.canvas_width - 20;
+        if (base_position.x > canvas.width - 20) {
+            base_position.x = canvas.width - 20;
         }
-        if (base_position.y > this.canvas_height) {
-            base_position.y = this.canvas_height;
+        if (base_position.y > canvas.height) {
+            base_position.y = canvas.height;
         }
 
         if (base_position.x < 0) {
@@ -66,20 +61,17 @@ export default class {
     }
 
     drawPlayer() {
-        const canvas = g().canvas;
-        this.canvas_width = canvas.width;
-        this.canvas_height = canvas.height;
         const player = g().player;
         if (player.shape === 'triangle') {
             this.drawTriangle(player.size, player.position, player.color);
         }
         if (player.shape === 'circle') {
-            this.drawCircle(this.canvas_width * player.position.x, this.canvas_height * player.position.y, player.size, player.color);
+            this.drawCircle(canvas.width * player.position.x, canvas.height * player.position.y, player.size, player.color);
         }
     }
 
     drawEllipse(x, y, w, h, color, kill = true) {
-        if (kill && (y < 0 || y > this.canvas_height)) {
+        if (kill && (y < 0 || y > canvas.height)) {
             return true;
         }
         let ctx = g().mainCanvas.getContext('2d');
@@ -165,28 +157,6 @@ export default class {
     }
 
 
-    movePlayer() {
-        const tracker = g().tracker;
-        const keys = tracker.keys;
-        if (!keys.length) return;
-        const player = g().player;
-        if (tracker.isKeyPressed('d')) {
-            g().player.position.x += player.movement_speed.x;
-        }
-        if (tracker.isKeyPressed('a')) {
-            g().player.position.x -= player.movement_speed.x;
-        }
-        if (tracker.isKeyPressed('s')) {
-            g().player.position.y += player.movement_speed.y
-        }
-        if (tracker.isKeyPressed('w')) {
-            g().player.position.y -= player.movement_speed.y
-        }
-        if (g().player.position.x < 0 || g().player.position.x > 1) {
-            g().tracker.keys = [];
-        }
-    }
-
     drawLevel() {
         this.objects.forEach((el) => {
             el.move();
@@ -196,25 +166,49 @@ export default class {
 
     drawGame() {
         const ctx = g().mainCanvas.getContext('2d');
-        ctx.clearRect(0, 0, g().canvas.width, g().canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "36px serif";
         ctx.fillStyle = 'red';
         ctx.fillText("Points: " + g().player.points, 10, 50);
         ctx.fillStyle = 'gray';
-        ctx.fillText("WASD te mueves y click disparas", 10, this.canvas_height - 50);
+        ctx.fillText("WASD te mueves y click disparas", 10, canvas.height - 50);
         this.drawLevel();
-        this.movePlayer();
         this.drawPlayer();
         this.drawWeapons();
         this.drawProjectiles();
     }
 
-    drawWin(){
+    drawWin() {
         const ctx = g().mainCanvas.getContext('2d');
-        ctx.clearRect(0, 0, g().canvas.width, g().canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "40px serif";
         ctx.fillStyle = 'green';
-        ctx.fillText("Felicidades te ganaste un cake comepinga", this.canvas_width/2 - 300, this.canvas_height/2);
+        ctx.fillText("Felicidades te ganaste un cake comepinga", canvas.width / 2 - 300, canvas.height / 2);
+    }
+
+    buildLevel() {
+        this.level_created = true;
+        // this.objects.push(new Box(200, 200, 200, 200, 'blue'));
+        this.objects.push(
+            new circle(
+                Math.round(Math.random() * canvas.width),
+                Math.round(Math.random() * canvas.height),
+                10,
+                '#e7b63f',
+                0.3,
+                0.3,
+                7)
+        );
+        this.objects.push(
+            new circle(
+                Math.round(Math.random() * canvas.width),
+                Math.round(Math.random() * canvas.height),
+                10,
+                '#3fe7ce',
+                0.3,
+                0.3,
+                4)
+        );
     }
 }
 

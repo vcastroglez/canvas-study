@@ -15,6 +15,7 @@ export default class {
         this.height = h;
         this.color = color;
         this.rotation = rotation
+        this.pcc = true;//player can crash
     }
     inBound(x,y){
         return x > (this.x - this.width/2) && x < (this.x + this.width/2) && y > (this.y - this.height/2) && y < (this.y + this.height/2);
