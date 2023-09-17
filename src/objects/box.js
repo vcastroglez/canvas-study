@@ -1,14 +1,17 @@
 import globals from "../Globals.js";
+import BaseObject from "./BaseObject.js";
 
-export default class {
+export default class extends BaseObject{
     width = 0;
     height = 0;
     rotation = 0;
     x= 0;
     y= 0;
     color = 'red';
+    pcc = false;
 
     constructor(x,y,w,h,color, rotation) {
+        super();
         this.x = x;
         this.y = y;
         this.width = w;

@@ -6,12 +6,6 @@ export default class {
     base_position = {};
     tip_position = {};
     last_position = {};
-    objects = [];
-    level_created = false;
-
-    constructor() {
-        if (!this.level_created) this.buildLevel();
-    }
 
     drawTriangle(x, y, size, color) {
         const ctx = g().ctx();
@@ -119,7 +113,7 @@ export default class {
 
     isInBound(x, y) {
         let inBound = false;
-        this.objects.every(el => {
+        g().level.objects.every(el => {
             if (el.inBound(x, y)) {
                 inBound = true;
                 g().player.points++;
@@ -156,14 +150,6 @@ export default class {
         return this.radians[angle];
     }
 
-
-    drawLevel() {
-        this.objects.forEach((el) => {
-            el.move();
-            el.draw()
-        });
-    }
-
     drawGame() {
         const ctx = g().mainCanvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -172,7 +158,7 @@ export default class {
         ctx.fillText("Points: " + g().player.points, 10, 50);
         ctx.fillStyle = 'gray';
         ctx.fillText("WASD te mueves y click disparas", 10, canvas.height - 50);
-        this.drawLevel();
+        g().level.draw();
         this.drawPlayer();
         this.drawWeapons();
         this.drawProjectiles();
@@ -184,31 +170,6 @@ export default class {
         ctx.font = "40px serif";
         ctx.fillStyle = 'green';
         ctx.fillText("Felicidades te ganaste un cake comepinga", canvas.width / 2 - 300, canvas.height / 2);
-    }
-
-    buildLevel() {
-        this.level_created = true;
-        // this.objects.push(new Box(200, 200, 200, 200, 'blue'));
-        this.objects.push(
-            new circle(
-                Math.round(Math.random() * canvas.width),
-                Math.round(Math.random() * canvas.height),
-                10,
-                '#e7b63f',
-                0.3,
-                0.3,
-                7)
-        );
-        this.objects.push(
-            new circle(
-                Math.round(Math.random() * canvas.width),
-                Math.round(Math.random() * canvas.height),
-                10,
-                '#3fe7ce',
-                0.3,
-                0.3,
-                4)
-        );
     }
 }
 

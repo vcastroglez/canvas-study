@@ -5,11 +5,11 @@ g().mainCanvas.getContext('2d').scale(1, 1);
 g().mainCanvas.setAttribute('width', canvas.width);
 g().mainCanvas.setAttribute('height', canvas.height);
 g().tracker.trackPlayer();
-
+const pointsToWin = 20;
 function frameDraw() {
     g().drawing.drawGame();
     g().player.move();
-    if (g().player.points > 9) {
+    if (g().player.points >= pointsToWin) {
         g().drawing.drawWin();
         return;
     }

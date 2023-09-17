@@ -1,10 +1,12 @@
 import globals, {canvas} from "../Globals.js";
+import BaseObject from "./BaseObject.js";
 
-export default class {
+export default class extends BaseObject{
     radius = 0;
     x = 0;
     y = 0;
     color = 'red';
+    pcc = false;
 
     /**
      * @param {number} x
@@ -16,6 +18,7 @@ export default class {
      * @param s speed
      */
     constructor(x, y, r, color, xd = 1, yd = 0, s = 5) {
+        super();
         this.x = x;
         this.y = y;
         this.color = color;
@@ -23,7 +26,6 @@ export default class {
         this.speed = s;
         this.xDirection = xd;//1 or -1
         this.yDirection = yd;//1 or -1
-        this.pcc = false;//player can crash
     }
 
     inBound(x, y) {
