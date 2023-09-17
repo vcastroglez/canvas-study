@@ -116,7 +116,7 @@ export default class {
         g().level.objects.every(el => {
             if (el.inBound(x, y)) {
                 inBound = true;
-                g().player.points++;
+                if(!el.pcc) g().player.points++;
                 return false;
             }
             return true;
@@ -150,12 +150,13 @@ export default class {
         return this.radians[angle];
     }
 
-    drawGame() {
+    drawGame(avgFrames) {
         const ctx = g().mainCanvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "36px serif";
         ctx.fillStyle = 'red';
         ctx.fillText("Points: " + g().player.points, 10, 50);
+        ctx.fillText("FPS: " + Math.round(avgFrames*10), canvas.width - 200, 50);
         ctx.fillStyle = 'gray';
         ctx.fillText("WASD te mueves y click disparas", 10, canvas.height - 50);
         g().level.draw();

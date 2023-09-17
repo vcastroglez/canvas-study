@@ -36,13 +36,42 @@ export default class extends BaseObject{
     }
 
     fixBounds() {
-        if (this.x < 0 || this.x > canvas.width) {
+        if (this.x < 0 || this.x > canvas.width || !this.canMove('x')) {
             this.xDirection *= -1;
         }
 
-        if (this.y < 0 || this.y > canvas.height) {
+        if (this.y < 0 || this.y > canvas.height || !this.canMove('y')) {
             this.yDirection *= -1;
         }
+    }
+
+    canMove(axis){
+        let targetX = this.x;
+        let targetY = this.y;
+        if(axis === 'x' && this.xDirection>0){
+            targetX += this.radius;
+        } else if(axis === 'x' && this.xDirection<0){
+            targetX -= this.radius;
+        } else if(axis === 'y' && this.yDirection > 0){
+            targetY += this.radius;
+        } else {
+            targetY -= this.radius;
+        }
+
+        let thereIsObject = false;
+        globals().level.objects.every(obj=>{
+            if(obj.pcc) {
+                const isTouching = obj.inBound(targetX, targetY);
+                if (isTouching) {
+                    thereIsObject = true;
+                    return false;
+                }
+            }
+
+            return true;
+        })
+
+        return !thereIsObject;
     }
 
     move() {
