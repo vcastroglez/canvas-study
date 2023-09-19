@@ -1,0 +1,13 @@
+{
+    "require": {
+        "larapack/dd": "^1.1",
+        "ralouphie/mimey": "^1.0",
+        "predis/predis": "^2.2",
+        "spatie/async": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "src\\": "src/"
+        }
+    }
+}

@@ -49,6 +49,8 @@ export default class {
         if (this.position.y > this.size && isUp && this.canMove('up')) {
             this.position.y -= this.movement_speed.y
         }
+
+        if(g().server_connected) g().server.send(JSON.stringify({action:'position',data:this.position}));
     }
 
     canMove(direction){

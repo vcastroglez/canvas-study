@@ -28,3 +28,28 @@ function frameDraw(timestamp) {
 }
 
 setTimeout(frameDraw, 1000);
+
+// Connection opened
+g().server.addEventListener("open", (event) => {
+    g().server_connected = true;
+    g().server.send("ping");
+});
+g().server.addEventListener("close", (event) => {
+    g().server_connected = false;
+});
+
+// Listen for messages
+g().server.addEventListener("message", (event) => {
+    const data = JSON.parse(event.data);
+    if(data.action == 'enemy'){
+        const info = data.data;
+        g().enemy.id = info.player;
+        g().enemy.setPosition(info.position);
+        setInterval(()=>{
+            g().server.send(JSON.stringify({'action':'update-enemy','id':info.player}));
+        },100)
+    }else if(data.action == 'update-enemy'){
+        const info = data.data;
+        g().enemy.setPosition(info.position);
+    }
+});

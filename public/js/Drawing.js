@@ -161,6 +161,7 @@ export default class {
         ctx.fillText("WASD te mueves y click disparas", 10, canvas.height - 50);
         g().level.draw();
         this.drawPlayer();
+        g().enemy.draw();
         this.drawWeapons();
         this.drawProjectiles();
     }
