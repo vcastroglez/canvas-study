@@ -16,12 +16,11 @@ export default class {
     }
 
     draw(){
-        globals().drawing.drawCircle(this.position.x,this.position.y,10,'green');
+        globals().drawing.drawCircle(this.position.x,this.position.y,20,'red');
     }
 
-    setPosition({x,y}){
+    setPosition(x,y){
         this.position.x = x;
         this.position.y = y;
-        this.draw();
     }
 }

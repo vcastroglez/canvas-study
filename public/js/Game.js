@@ -10,15 +10,17 @@ let frames = 0;
 let lastTimestamp = 0;
 let avgFrames = 0;
 let lastFrames = 0;
+
 function frameDraw(timestamp) {
     g().drawing.drawGame(avgFrames);
     g().player.move();
+    g().enemy.draw();
     if (g().player.points >= pointsToWin) {
         g().drawing.drawWin();
         return;
     }
     frames++;
-    if(timestamp-lastTimestamp > 100){
+    if (timestamp - lastTimestamp > 100) {
         avgFrames = (lastFrames + frames) / 2
         lastFrames = frames;
         frames = 0;
@@ -41,15 +43,21 @@ g().server.addEventListener("close", (event) => {
 // Listen for messages
 g().server.addEventListener("message", (event) => {
     const data = JSON.parse(event.data);
-    if(data.action == 'enemy'){
+    console.log(`MSG: ${event.data}`);
+    if (data.action == 'enemy') {
         const info = data.data;
         g().enemy.id = info.player;
-        g().enemy.setPosition(info.position);
-        setInterval(()=>{
-            g().server.send(JSON.stringify({'action':'update-enemy','id':info.player}));
-        },100)
-    }else if(data.action == 'update-enemy'){
+        g().enemy.setPosition(info.position?.x,info.position?.y);
+        setInterval(() => {
+            g().server.send(JSON.stringify({'action': 'update-enemy', 'id': info.player}));
+        }, 40)
+    } else if (data.action == 'update-enemy') {
         const info = data.data;
-        g().enemy.setPosition(info.position);
+        g().enemy.setPosition(info.position?.x,info.position?.y);
+    } else if (data.action == 'no-enemy') {
+        setTimeout(() => {
+            g().server.send(JSON.stringify({'action': 'get-enemy'}));
+        }, 3000);
+        console.log("no enemy found, retrying in 3 seconds");
     }
 });

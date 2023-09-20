@@ -2,6 +2,8 @@
 
 namespace src\ws;
 
+use src\redis\RedisConnection;
+
 abstract class WebSocketServer{
 
     protected string $userClass = WebSocketUser::class; // redefine this if you want a custom user class.  The custom user class should inherit from WebSocketUser.

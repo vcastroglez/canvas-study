@@ -3,7 +3,8 @@
         "larapack/dd": "^1.1",
         "ralouphie/mimey": "^1.0",
         "predis/predis": "^2.2",
-        "spatie/async": "^1.6"
+        "spatie/async": "^1.6",
+        "nesbot/carbon": "^2.70"
     },
     "autoload": {
         "psr-4": {

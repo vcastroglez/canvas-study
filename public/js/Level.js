@@ -10,7 +10,6 @@ export default class {
     }
 
     buildLevel() {
-        this.objects.push(new Box(500, 200, 600, 50, 'blue'));
         this.objects.push(
             new circle(
                 Math.round(Math.random() * canvas.width),
