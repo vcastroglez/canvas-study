@@ -128,7 +128,7 @@ abstract class WebSocketServer{
 
                     } elseif($numBytes == 0) {
                         $this->disconnect($socket);
-                        $this->stderr("Client disconnected. TCP connection lost: ".$socket);
+                        $this->stderr("Client disconnected. TCP connection lost: ".json_encode($socket));
                     } else {
                         $user = $this->getUserBySocket($socket);
                         if(!$user->handshake) {

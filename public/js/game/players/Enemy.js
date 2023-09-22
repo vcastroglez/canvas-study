@@ -1,9 +1,9 @@
-import globals, {canvas} from "./Globals.js";
+import globals, {canvas} from "../../conf/globals.js";
 
 export default class {
     position = {
-        x: 222,
-        y: 333
+        x: -100,
+        y: -100
     }
 
     id = null;

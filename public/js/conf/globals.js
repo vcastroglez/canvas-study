@@ -1,9 +1,9 @@
-import Player from "./Player.js";
-import Drawing from "./Drawing.js";
-import MouseTracker from "./MouseTracker.js";
-import Level from "./Level.js";
-import BaseObject from "./objects/BaseObject.js";
-import Enemy from "./Enemy.js";
+import Player from "../game/players/Player.js";
+import Drawing from "../game/drawing.js";
+import MouseTracker from "../game/mouse_tracker.js";
+import Level from "../game/objects/Level.js";
+import BaseObject from "../game/objects/BaseObject.js";
+import Enemy from "../game/players/Enemy.js";
 
 export const canvas = {
     width: window.innerWidth,

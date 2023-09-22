@@ -1,22 +1,22 @@
-import {weapons} from './Weapons.js';
-import g, {canvas} from "./Globals.js";
+import {weapons} from '../weapons/Weapons.js';
+import g, {canvas} from "../../conf/globals.js";
 
 const default_player_size = 20;
 const default_player_shape = 'circle';
 const default_player_color = 'gray';
-const default_player_weapon = weapons.pistol;
 
 export default class {
     size = default_player_size;
     shape = default_player_shape;
     color = default_player_color;
-    weapon = default_player_weapon;
+    weapon = weapons.pistol;
     position = {
         x: 0.5 * canvas.width,
         y: 0.95 * canvas.height
     };
     speed = 0.002;
     movement_speed = {x: canvas.width * this.speed, y: canvas.width * this.speed};
+    id = null;
 
     getPosition() {
         return {x: this.position.x, y: this.position.y}

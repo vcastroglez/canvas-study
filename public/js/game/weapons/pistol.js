@@ -1,6 +1,6 @@
-import globals from "../Globals.js";
+import globals from "../../conf/globals.js";
 import bullet from "./projectile/bullet.js";
-import g from "../Globals.js";
+import g from "../../conf/globals.js";
 
 export class pistol {
     projectile = {

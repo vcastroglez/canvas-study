@@ -1,4 +1,4 @@
-import globals from "../Globals.js";
+import globals from "../../conf/globals.js";
 import BaseObject from "./BaseObject.js";
 
 export default class extends BaseObject{

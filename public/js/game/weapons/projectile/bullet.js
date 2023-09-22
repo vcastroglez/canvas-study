@@ -1,4 +1,4 @@
-import globals from "../../Globals.js";
+import globals from "../../../conf/globals.js";
 
 export default class {
     speed = 1;

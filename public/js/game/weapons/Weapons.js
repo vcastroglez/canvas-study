@@ -1,4 +1,4 @@
-import {pistol} from "./weapons/pistol.js";
+import {pistol} from "./pistol.js";
 
 let projectile;
 export const weapons = {

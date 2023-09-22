@@ -1,4 +1,4 @@
-import globals, {canvas} from "../Globals.js";
+import globals, {canvas} from "../../conf/globals.js";
 import BaseObject from "./BaseObject.js";
 
 export default class extends BaseObject{

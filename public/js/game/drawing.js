@@ -1,4 +1,4 @@
-import g, {canvas} from "./Globals.js";
+import g, {canvas} from "../conf/globals.js";
 import circle from "./objects/circle.js";
 
 export default class {

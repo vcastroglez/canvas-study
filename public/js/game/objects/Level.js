@@ -1,6 +1,6 @@
-import circle from "./objects/circle.js";
-import {canvas} from "./Globals.js";
-import Box from "./objects/box.js";
+import circle from "./circle.js";
+import {canvas} from "../../conf/globals.js";
+import Box from "./box.js";
 
 export default class {
     objects = [];

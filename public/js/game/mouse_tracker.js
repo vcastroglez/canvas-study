@@ -1,4 +1,4 @@
-import g from "./Globals.js";
+import g from "../conf/globals.js";
 
 export default class {
     inclination_speed = 5;
