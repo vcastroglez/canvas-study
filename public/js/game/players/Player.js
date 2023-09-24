@@ -1,5 +1,5 @@
-import {weapons} from '../weapons/Weapons.js';
 import g, {canvas} from "../../conf/globals.js";
+import {pistol} from "../weapons/pistol.js";
 
 const default_player_size = 20;
 const default_player_shape = 'circle';
@@ -9,7 +9,7 @@ export default class {
     size = default_player_size;
     shape = default_player_shape;
     color = default_player_color;
-    weapon = weapons.pistol;
+    weapon = new pistol();
     position = {
         x: 0.5 * canvas.width,
         y: 0.95 * canvas.height
@@ -19,7 +19,7 @@ export default class {
     id = null;
 
     getPosition() {
-        return {x: this.position.x, y: this.position.y}
+        return this.position;
     }
 
     constructor() {

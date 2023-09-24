@@ -129,14 +129,14 @@ export default class {
         this.projectiles.splice(index, 1);
     }
 
-    drawWeapons() {
-        const dy = g().tracker.position.y - g().player.getPosition().y
-        const dx = g().tracker.position.x - g().player.getPosition().x;
-        g().player.weapon.theta = Math.atan2(dy, dx);
-        g().player.weapon.position.x = g().player.getPosition().x + (g().player.size) * Math.cos(g().player.weapon.theta)
-        g().player.weapon.position.y = g().player.getPosition().y - (g().player.size) * Math.sin(-g().player.weapon.theta)
-        if (g().player.weapon.body === 'circle') {
-            this.drawCircle(g().player.weapon.position.x, g().player.weapon.position.y, g().player.weapon.size, g().player.weapon.color);
+    drawWeapon(mouseX,mouseY,player) {
+        const dy = mouseY - player.getPosition().y
+        const dx = mouseX - player.getPosition().x;
+        player.weapon.theta = Math.atan2(dy, dx);
+        player.weapon.position.x = player.getPosition().x + (player.size + player.weapon.size) * Math.cos(player.weapon.theta)
+        player.weapon.position.y = player.getPosition().y - (player.size + player.weapon.size) * Math.sin(-player.weapon.theta)
+        if (player.weapon.body === 'circle') {
+            this.drawCircle(player.weapon.position.x, player.weapon.position.y, player.weapon.size, player.weapon.color);
         }
     }
 
@@ -162,7 +162,9 @@ export default class {
         g().level.draw();
         this.drawPlayer();
         g().enemy.draw();
-        this.drawWeapons();
+        this.drawWeapon(g().tracker.position.x,g().tracker.position.y,g().player);
+        if(g().server_connected) g().server.send(JSON.stringify({action:'mouse',data:g().tracker.position}));
+        this.drawWeapon(g().enemy.mouse.x,g().enemy.mouse.y,g().enemy);
         this.drawProjectiles();
     }
 

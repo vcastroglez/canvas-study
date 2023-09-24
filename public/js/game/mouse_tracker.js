@@ -2,7 +2,6 @@ import g from "../conf/globals.js";
 
 export default class {
     inclination_speed = 5;
-    max_inclination = 3;
     keys = [];
     position = {}
 

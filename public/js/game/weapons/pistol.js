@@ -21,6 +21,10 @@ export class pistol {
     theta = 0;
     last_shoot = 0;
 
+    constructor(color) {
+        this.color = color || 'red';
+        this.projectile.color = this.color;
+    }
     fire() {
         const now = Date.now();
         if ((now - this.last_shoot) > this.projectile.fire_interval * 1000) {

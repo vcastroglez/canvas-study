@@ -6,14 +6,17 @@ const routes = {
     },
     enemy: (data) => {
         g().enemy.id = data.player;
+        g().enemy.inactivity = 0;
         g().enemy.setPosition(data.position?.x,data.position?.y);
-        setInterval(() => {
+         g().enemy.interval = setInterval(() => {
             g().server.send(JSON.stringify({'action': 'update-enemy', 'id': data.player}));
         }, 25)
     },
     'update-enemy': (data) => {
         g().enemy.id = data.player;
+        g().enemy.inactivity = 0;
         g().enemy.setPosition(data.position?.x,data.position?.y);
+        g().enemy.setMouse(data.mouse?.x,data.mouse?.y);
     },
     'no-enemy': () => {
         setTimeout(() => {
@@ -24,7 +27,7 @@ const routes = {
 }
 
 export default function resolve(payload){
-    const action = payload.action;
+    const action = payload.action || payload.route;
     const data = payload.data;
     routes[action](data);
 }

@@ -70,7 +70,7 @@ class RedisConnection{
         $this->redis->hdel($key, $fields);
     }
 
-    public function cleanOldUsers(): void{
+    public function cleanOldUsers(bool $delete_all = false): void{
         $now = Carbon::now()->timestamp;
         $elapsed = $now - $this->last_check;
         if($elapsed < 5) {
@@ -81,7 +81,7 @@ class RedisConnection{
         echo count($all_users).' users connected'.PHP_EOL;
         foreach($all_users as $key => $value) {
             $last_activity = $now - $value;
-            if($last_activity < 30)
+            if($last_activity < 30 && !$delete_all)
                 continue;
 
             $this->hdel('users', [$key]);

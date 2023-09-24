@@ -22,27 +22,35 @@ class CentralServer extends WebSocketServer{
         if($msg['action'] == 'position') {
             $this->redis->hset($user->id, 'position', json_encode($msg['data']));
             $this->redis->hset('users', $user->id, Carbon::now()->timestamp);
+        } else if($msg['action'] == 'mouse'){
+            $this->redis->hset($user->id, 'mouse', json_encode($msg['data']));
+            $this->redis->hset('users', $user->id, Carbon::now()->timestamp);
         } else if($msg['action'] == 'update-enemy') {
-            $enemy = RedisConnection::i()->hget($msg['id'], 'position');
-            if(!$enemy) {
+            $enemy_position = RedisConnection::i()->hget($msg['id'], 'position');
+            $enemy_mouse = RedisConnection::i()->hget($msg['id'], 'mouse');
+            if(!$enemy_position) {
                 $enemy = $this->getRandomEnemy($user);
                 if(!$enemy) {
                     $this->send($user, [
                         'action' => 'no-enemy',
                         'data'   => "nobody connected"
                     ]);
+                    return;
                 }
                 $id = $enemy['player'];
                 $position = $enemy['position'];
+                $mouse = $enemy['mouse'];
             } else {
                 $id = $msg['id'];
-                $position = json_decode($enemy, true);
+                $position = json_decode($enemy_position, true);
+                $mouse = json_decode($enemy_mouse ?? "[]",true);
             }
             $this->send($user, [
                 'action' => 'update-enemy',
                 'data'   => [
                     'player'   => $id,
-                    'position' => $position
+                    'position' => $position,
+                    'mouse' => $mouse,
                 ]
             ]);
         } else if($msg['action'] == 'get-enemy') {
@@ -82,7 +90,8 @@ class CentralServer extends WebSocketServer{
             $random = array_rand($connected_users);
             return [
                 'player'   => $random,
-                'position' => json_decode($this->redis->hget($random, 'position'), true)
+                'position' => json_decode($this->redis->hget($random, 'position'), true),
+                'mouse' => json_decode($this->redis->hget($random, 'mouse'), true),
             ];
         } else {
             return null;
@@ -90,7 +99,7 @@ class CentralServer extends WebSocketServer{
     }
 
     protected function closed($user){
-        $this->redis->hdel($user->id, ['position']);
+        $this->redis->hdel($user->id, ['position','mouse']);
         $this->redis->hdel('users', [$user->id]);
     }
 }
