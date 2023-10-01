@@ -7,30 +7,45 @@ let avgFrames = 0;
 let lastFrames = 0;
 
 export default function () {
-    g().mainCanvas.style.border = '1px solid black';
-    g().mainCanvas.getContext('2d').scale(1, 1);
-    g().mainCanvas.setAttribute('width', canvas.width);
-    g().mainCanvas.setAttribute('height', canvas.height);
-    g().tracker.trackPlayer();
+	g().mainCanvas.style.border = '1px solid black';
+	g().mainCanvas.getContext('2d').scale(1, 1);
+	g().mainCanvas.setAttribute('width', canvas.width);
+	g().mainCanvas.setAttribute('height', canvas.height);
+	g().tracker.trackPlayer();
 
-    setTimeout(frameDraw, 1000);
+	setTimeout(frameDraw, 1000);
 }
 
 
 function frameDraw(timestamp) {
-    g().drawing.drawGame(avgFrames);
-    g().player.move();
-    g().enemy.draw();
-    if (g().player.points >= pointsToWin) {
-        g().drawing.drawWin();
-        return;
-    }
-    frames++;
-    if (timestamp - lastTimestamp > 100) {
-        avgFrames = (lastFrames + frames) / 2
-        lastFrames = frames;
-        frames = 0;
-        lastTimestamp = timestamp;
-    }
-    requestAnimationFrame(frameDraw);
+	g().drawing.drawGame(avgFrames);
+	g().player.move();
+	g().enemy.draw();
+	if (g().player.points >= pointsToWin) {
+		g().drawing.drawWin();
+		return;
+	}
+	frames++;
+	if (timestamp - lastTimestamp > 100) {
+		avgFrames = (lastFrames + frames) / 2
+		lastFrames = frames;
+		frames = 0;
+		lastTimestamp = timestamp;
+	}
+
+	if (g().server_connected) {//todo unify this
+		g().server.send(JSON.stringify(
+			{
+				action: 'position',
+				data: g().player.position,
+				info: {
+					size: g().player.size,
+					points: g().player.points,
+					projectiles: g().drawing.projectiles,
+				}
+			}
+		));
+		g().server.send(JSON.stringify({action: 'mouse', data: g().tracker.position}));
+	}
+	requestAnimationFrame(frameDraw);
 }

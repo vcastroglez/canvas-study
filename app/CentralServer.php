@@ -21,6 +21,7 @@ class CentralServer extends WebSocketServer{
             return;
         if($msg['action'] == 'position') {
             $this->redis->hset($user->id, 'position', json_encode($msg['data']));
+            $this->redis->hset($user->id, 'info', json_encode($msg['info']));
             $this->redis->hset('users', $user->id, Carbon::now()->timestamp);
         } else if($msg['action'] == 'mouse'){
             $this->redis->hset($user->id, 'mouse', json_encode($msg['data']));
@@ -28,6 +29,7 @@ class CentralServer extends WebSocketServer{
         } else if($msg['action'] == 'update-enemy') {
             $enemy_position = RedisConnection::i()->hget($msg['id'], 'position');
             $enemy_mouse = RedisConnection::i()->hget($msg['id'], 'mouse');
+            $enemy_info = RedisConnection::i()->hget($msg['id'], 'info');
             if(!$enemy_position) {
                 $enemy = $this->getRandomEnemy($user);
                 if(!$enemy) {
@@ -40,10 +42,12 @@ class CentralServer extends WebSocketServer{
                 $id = $enemy['player'];
                 $position = $enemy['position'];
                 $mouse = $enemy['mouse'];
+                $info = $enemy['info'];
             } else {
                 $id = $msg['id'];
                 $position = json_decode($enemy_position, true);
                 $mouse = json_decode($enemy_mouse ?? "[]",true);
+                $info = json_decode($enemy_info ?? "[]",true);
             }
             $this->send($user, [
                 'action' => 'update-enemy',
@@ -51,6 +55,7 @@ class CentralServer extends WebSocketServer{
                     'player'   => $id,
                     'position' => $position,
                     'mouse' => $mouse,
+                    'info' => $info,
                 ]
             ]);
         } else if($msg['action'] == 'get-enemy') {
@@ -92,6 +97,7 @@ class CentralServer extends WebSocketServer{
                 'player'   => $random,
                 'position' => json_decode($this->redis->hget($random, 'position'), true),
                 'mouse' => json_decode($this->redis->hget($random, 'mouse'), true),
+                'info' => json_decode($this->redis->hget($random, 'info'), true),
             ];
         } else {
             return null;
