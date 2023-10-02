@@ -38,7 +38,7 @@ abstract class WebSocketServer{
         // the handshake has completed.
     }
 
-    protected function send($user, $message, $msg_type = 'text'){
+    public function send($user, $message, $msg_type = 'text'){
         if(is_array($message)) $message = json_encode($message);
         if($user->handshake) {
             $message = $this->frame($message, $user,$msg_type);

@@ -1,7 +1,7 @@
 <?php
 
 function exception_handler(Throwable $exception): void{
-    echo "Uncaught exception: " , $exception->getMessage(), "\n", $exception->getFile(),$exception->getLine(),"\n";
+    echo "Uncaught exception: " , $exception->getMessage(), "\n", $exception->getFile(),':',$exception->getLine(),"\n";
 }
 
 set_exception_handler('exception_handler');

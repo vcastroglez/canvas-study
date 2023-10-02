@@ -1,11 +1,12 @@
 <?php
-$route = $_REQUEST['route'] ?: '/';
-$params = $_REQUEST;
-unset($params['route']);
-$routes = [
-  '/' => function(){
-    echo file_get_contents(PUBLIC_DIR.'/app.html');
-    die;
-  }
-];
-$routes[$route]() or die($route);//tovla;
+
+use app\Router;
+
+require_once APP_DIR.'/Router.php';
+
+Router::route('/', function(){
+	echo file_get_contents(PUBLIC_DIR.'/app.html');
+	die;
+});
+
+Router::resolve($_REQUEST);
