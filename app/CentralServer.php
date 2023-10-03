@@ -21,7 +21,7 @@ class CentralServer extends WebSocketServer{
 		$msg['user'] = $user;
 		if(!$msg)
 			return;
-		Router::resolve($msg, $this);
+		Router::resolve($msg, $this, true);
 	}
 
 	protected function connected($user)
@@ -29,7 +29,7 @@ class CentralServer extends WebSocketServer{
 		Router::resolve([
 			'route' => 'connected',
 			'user'  => $user
-		], $this);
+		], $this, true);
 	}
 
 

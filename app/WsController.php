@@ -14,8 +14,11 @@ class WsController{
 		$this->redis = RedisConnection::i();
 	}
 
-	private function sendEnemy($user, CentralServer $ws_server): void
+	public function sendEnemy($user, CentralServer $ws_server): void
 	{
+		if(is_array($user)){
+			$user = $user['user'] or throw new \Exception('Wrong payload in sendEnemy');
+		}
 		$enemy = $this->getRandomEnemy($user);
 		if(!empty($enemy)) {
 			$ws_server->send($user, [
