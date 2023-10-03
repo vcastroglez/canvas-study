@@ -153,13 +153,14 @@ export default class {
 	}
 
 	drawGame(avgFrames) {
+		g().mainCanvas.height = window.innerHeight;
+		g().mainCanvas.width = window.innerWidth;
 		const ctx = g().mainCanvas.getContext('2d');
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.save();
 		ctx.font = "36px serif";
 		ctx.fillStyle = 'red';
 		ctx.fillText("Points: " + g().player.points, 10, 50);
-		ctx.fillText("FPS: " + Math.round(avgFrames * 10), canvas.width - 200, 50);
+		ctx.fillText("FPS: "+avgFrames, canvas.width - 200, 50);
 		ctx.fillStyle = 'gray';
 		ctx.fillText("WASD te mueves y click disparas", 10, canvas.height - 50);
 		ctx.restore();

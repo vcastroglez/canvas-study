@@ -3,8 +3,10 @@ import g, {canvas} from "../conf/globals.js";
 const pointsToWin = 20;
 let frames = 0;
 let lastTimestamp = 0;
+let fpsTimestamp = 0;
 let avgFrames = 0;
 let lastFrames = 0;
+const targetFPSTS = 15;
 
 export default function () {
 	g().mainCanvas.style.border = '1px solid black';
@@ -18,6 +20,24 @@ export default function () {
 
 
 function frameDraw(timestamp) {
+	if (timestamp - lastTimestamp > targetFPSTS) {
+		frames++;
+		if(frames>100000){
+			frames = lastFrames = 0;
+		}
+		if(timestamp - fpsTimestamp>1000) {
+			avgFrames = frames - lastFrames;
+			lastFrames = frames;
+			fpsTimestamp = timestamp;
+		}
+		frameHandle(timestamp);
+		lastTimestamp = timestamp;
+	}
+
+	requestAnimationFrame(frameDraw);
+}
+
+function frameHandle(timestamp){
 	g().drawing.drawGame(avgFrames);
 	g().player.move();
 	g().enemy.draw();
@@ -25,15 +45,8 @@ function frameDraw(timestamp) {
 		g().drawing.drawWin();
 		return;
 	}
-	frames++;
-	if (timestamp - lastTimestamp > 100) {
-		avgFrames = (lastFrames + frames) / 2
-		lastFrames = frames;
-		frames = 0;
-		lastTimestamp = timestamp;
-	}
 
-	if (g().server_connected) {//todo unify this
+	if (g().server_connected) {//tovla todo unify this
 		g().server.send(JSON.stringify(
 			{
 				action: 'position',
@@ -47,5 +60,4 @@ function frameDraw(timestamp) {
 		));
 		g().server.send(JSON.stringify({action: 'mouse', data: g().tracker.position}));
 	}
-	requestAnimationFrame(frameDraw);
 }

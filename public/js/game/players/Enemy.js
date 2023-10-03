@@ -19,7 +19,6 @@ export default class {
 	inactivity = 0;
 	id = null;
 
-	shape = 'circle'
 	size = 20;
 
 	projectiles = [];

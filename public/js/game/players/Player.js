@@ -15,7 +15,7 @@ export default class {
 		y: 0.95 * canvas.height
 	};
 	health = 100;
-	speed = 0.002;
+	speed = 0.01;
 	movement_speed = {x: canvas.width * this.speed, y: canvas.width * this.speed};
 	id = null;
 
