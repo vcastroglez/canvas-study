@@ -1,6 +1,5 @@
 import Player from "../game/players/Player.js";
 import Drawing from "../game/drawing.js";
-import MouseTracker from "../game/mouse_tracker.js";
 import Level from "../game/objects/Level.js";
 import Enemy from "../game/players/Enemy.js";
 
@@ -9,18 +8,33 @@ export const canvas = {
 	height: window.innerHeight
 }
 
-class Globals {
+class Game {
 	mainCanvas = document.getElementById('mainCanvas');
-	player = new Player();
+	player = new Player(true);
 	enemy = new Enemy();
 	drawing = new Drawing();
-	tracker = new MouseTracker();
 	level = new Level();
 	server = new WebSocket("ws://piupiu.alpec.cu:8080");//"ws://piupiu.alpec.cu:8080"
 	server_connected = false;
+	stopGame = false;
 
-	ctx() {
+	getCtx() {
 		return this.mainCanvas.getContext('2d');
+	}
+
+	setUpCanvas() {
+		this.mainCanvas.style.border = '1px solid black';
+		this.mainCanvas.getContext('2d').scale(1, 1);
+		this.mainCanvas.setAttribute('width', canvas.width);
+		this.mainCanvas.setAttribute('height', canvas.height);
+	}
+
+	draw(avgFrames) {
+		this.mainCanvas.height = window.innerHeight;
+		this.mainCanvas.width = window.innerWidth;
+		this.level.draw(avgFrames);
+		this.player.draw();
+		this.enemy.draw();
 	}
 }
 
@@ -29,6 +43,6 @@ export default function () {
 	if (instance) {
 		return instance;
 	}
-	instance = new Globals();
+	instance = new Game();
 	return instance;
 }

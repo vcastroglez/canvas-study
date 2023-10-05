@@ -2,7 +2,7 @@ export default class {
     constructor() {
     }
 
-    inBound(x,y) {
+    inBound(x,y, size) {
         throw new Error('This method must be implemented');
     }
 

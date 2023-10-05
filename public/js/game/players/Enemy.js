@@ -3,7 +3,7 @@ import resolve from "../../conf/ws-router.js";
 import {pistol} from "../weapons/pistol.js";
 
 export default class {
-	weapon = new pistol('blue');
+	weapon = new pistol('blue', 'enemy');
 	position = {
 		x: -100,
 		y: -100
@@ -21,20 +21,13 @@ export default class {
 
 	size = 20;
 
-	projectiles = [];
-
 	getPosition() {
 		return this.position;
 	}
 
 	draw() {
 		globals().drawing.drawCircle(this.position.x, this.position.y, this.size, 'red');
-		globals().ctx().save();
-		globals().ctx().font = "30px Arial";
-		globals().ctx().textAlign = "center";
-		globals().ctx().textBaseline = "middle";
-		globals().ctx().fillText(this.points.toString(), this.position.x, this.position.y);
-		globals().ctx().restore();
+		this.weapon.draw(this.mouse.x, this.mouse.y, this.position.x, this.position.y, this.size);
 	}
 
 	setPoints(points) {
@@ -46,7 +39,7 @@ export default class {
 	}
 
 	setProjectiles(proj) {
-		this.projectiles = proj;
+		this.weapon.projectiles = proj;
 	}
 
 	inBound(x, y) {

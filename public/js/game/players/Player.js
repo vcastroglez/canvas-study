@@ -1,58 +1,64 @@
 import g, {canvas} from "../../conf/globals.js";
 import {pistol} from "../weapons/pistol.js";
-
-const default_player_size = 20;
-const default_player_shape = 'circle';
-const default_player_color = 'gray';
+import MouseTracker from "../mouse_tracker.js";
 
 export default class {
-	size = default_player_size;
-	shape = default_player_shape;
-	color = default_player_color;
-	weapon = new pistol();
+	size = 20;
+	shape = 'circle';
+	color = 'gray';
+	weapon = new pistol('red', 'player');
 	position = {
 		x: 0.5 * canvas.width,
-		y: 0.95 * canvas.height
+		y: 0.5 * canvas.height
 	};
 	health = 100;
-	speed = 0.01;
+	speed = 0.006;
 	movement_speed = {x: canvas.width * this.speed, y: canvas.width * this.speed};
 	id = null;
+	controls = null;
+	points = 0;
 
-	getPosition() {
-		return this.position;
-	}
-
-	constructor() {
+	constructor(isPlayer = false) {
 		this.points = 0;
+		if (isPlayer) {
+			this.controls = new MouseTracker();
+			this.listenEvents();
+		}
 	}
 
-	move() {
-		const tracker = g().tracker;
-		const keys = tracker.keys;
-		const isUp = tracker.isKeyPressed('w');
-		const isDown = tracker.isKeyPressed('s');
-		const isLeft = tracker.isKeyPressed('a');
-		const isRight = tracker.isKeyPressed('d');
+	#move() {
+		const controls = this.controls;
+		const keys = controls.keys;
+		const isUp = controls.isKeyPressed('w');
+		const isDown = controls.isKeyPressed('s');
+		const isLeft = controls.isKeyPressed('a');
+		const isRight = controls.isKeyPressed('d');
+		const isDiagonal = isUp && isRight || isUp && isLeft || isDown && isRight || isDown && isLeft;
+		let speedX = this.movement_speed.x;
+		let speedY = this.movement_speed.y;
+		if (isDiagonal) {
+			speedX *= 0.7;
+			speedY *= 0.7;
+		}
 		if (!keys.length) return;
-		if (this.position.x < (canvas.width - this.size) && isRight && this.canMove('right')) {
-			this.position.x += this.movement_speed.x;
+		if (this.position.x < (canvas.width - this.size) && isRight && this.#canMove('right')) {
+			this.position.x += speedX;
 		}
 
-		if (this.position.x > this.size && isLeft && this.canMove('left')) {
-			this.position.x -= this.movement_speed.x;
+		if (this.position.x > this.size && isLeft && this.#canMove('left')) {
+			this.position.x -= speedX;
 		}
 
-		if (this.position.y < (canvas.height - this.size) && isDown && this.canMove('down')) {
-			this.position.y += this.movement_speed.y
+		if (this.position.y < (canvas.height - this.size) && isDown && this.#canMove('down')) {
+			this.position.y += speedY
 		}
 
-		if (this.position.y > this.size && isUp && this.canMove('up')) {
-			this.position.y -= this.movement_speed.y
+		if (this.position.y > this.size && isUp && this.#canMove('up')) {
+			this.position.y -= speedY
 		}
 	}
 
-	canMove(direction) {
+	#canMove(direction) {
 		let targetX = this.position.x;
 		let targetY = this.position.y;
 		switch (direction) {
@@ -70,18 +76,23 @@ export default class {
 				break;
 		}
 
-		let thereIsObject = false;
-		g().level.objects.every((object, index) => {
-			if (object.pcc) {
-				const isTouching = object.inBound(targetX, targetY);
-				if (isTouching) {
-					thereIsObject = true;
-					return false;
-				}
-			}
-			return true;
-		})
+		let thereIsObject = g().level.inBoundLeptons(targetX, targetY, this.size);
 
 		return !thereIsObject;
+	}
+
+	draw() {
+		this.#move();
+		if (this.shape === 'circle') {
+			g().drawing.drawCircle(this.position.x, this.position.y, this.size, this.color);
+		}
+
+		this.weapon.draw(this.controls.position.x, this.controls.position.y, this.position.x, this.position.y, this.size);
+	}
+
+	listenEvents() {
+		document.getElementById('mainCanvas').addEventListener('hit-enemy', () => {
+			this.points++;
+		})
 	}
 }

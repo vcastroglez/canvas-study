@@ -1,4 +1,4 @@
-import g, {canvas} from "../conf/globals.js";
+import g from "../conf/globals.js";
 
 const pointsToWin = 20;
 let frames = 0;
@@ -6,47 +6,42 @@ let lastTimestamp = 0;
 let fpsTimestamp = 0;
 let avgFrames = 0;
 let lastFrames = 0;
-const targetFPSTS = 15;
+const targetFPSTS = 16;
 
 export default function () {
-	g().mainCanvas.style.border = '1px solid black';
-	g().mainCanvas.getContext('2d').scale(1, 1);
-	g().mainCanvas.setAttribute('width', canvas.width);
-	g().mainCanvas.setAttribute('height', canvas.height);
-	g().tracker.trackPlayer();
-
-	setTimeout(frameDraw, 1000);
+	g().setUpCanvas();
+	g().drawing.drawWholePageText("Loading...");
+	setTimeout(frameHandle, 1000);
 }
 
 
-function frameDraw(timestamp) {
+function frameHandle(timestamp) {
+	g().stopGame = false;
 	if (timestamp - lastTimestamp > targetFPSTS) {
 		frames++;
-		if(frames>100000){
+		if (frames > 100000) {
 			frames = lastFrames = 0;
 		}
-		if(timestamp - fpsTimestamp>1000) {
+		if (timestamp - fpsTimestamp > 1000) {
 			avgFrames = frames - lastFrames;
 			lastFrames = frames;
 			fpsTimestamp = timestamp;
 		}
-		frameHandle(timestamp);
+		frameDraw(timestamp);
 		lastTimestamp = timestamp;
 	}
 
-	requestAnimationFrame(frameDraw);
+	requestAnimationFrame(frameHandle);
 }
 
-function frameHandle(timestamp){
-	g().drawing.drawGame(avgFrames);
-	g().player.move();
-	g().enemy.draw();
-	if (g().player.points >= pointsToWin) {
-		g().drawing.drawWin();
+function frameDraw() {
+	g().draw(avgFrames);
+	if (g().player.points >= pointsToWin || g().stopGame) {
+		g().drawing.drawWholePageText("Felicidades te ganaste un cake comepinga");
 		return;
 	}
 
-	if (g().server_connected) {//tovla todo unify this
+	if (g().server_connected) {
 		g().server.send(JSON.stringify(
 			{
 				action: 'position',
@@ -54,10 +49,10 @@ function frameHandle(timestamp){
 				info: {
 					size: g().player.size,
 					points: g().player.points,
-					projectiles: g().drawing.projectiles,
+					projectiles: g().player.weapon.projectiles,
 				}
 			}
 		));
-		g().server.send(JSON.stringify({action: 'mouse', data: g().tracker.position}));
+		g().server.send(JSON.stringify({action: 'mouse', data: g().player.controls.position}));
 	}
 }

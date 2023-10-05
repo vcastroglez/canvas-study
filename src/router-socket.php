@@ -23,6 +23,6 @@ Router::route('mouse', function($payload){
 	$redis->hset('users', $user->id, Carbon::now()->timestamp);
 });
 
-Router::route('connected', [\app\WsController::class, 'connected']);
-Router::route('update-enemy', [\app\WsController::class, 'updateEnemy']);
-Router::route('get-enemy', [\app\WsController::class, 'sendEnemy']);
+Router::route('connected', [\app\Controllers\EnemySyncController::class, 'connected']);
+Router::route('update-enemy', [\app\Controllers\EnemySyncController::class, 'updateEnemy']);
+Router::route('get-enemy', [\app\Controllers\EnemySyncController::class, 'sendEnemy']);

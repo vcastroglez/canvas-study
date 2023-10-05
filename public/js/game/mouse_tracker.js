@@ -5,13 +5,13 @@ export default class {
     keys = [];
     position = {}
 
-    trackPlayer() {
+    constructor() {
         addEventListener('mousemove', (event) => {
             this.position.x = event.clientX;
             this.position.y = event.clientY;
         })
 
-        addEventListener('click', (event) => {
+        addEventListener('click', () => {
             g().player.weapon.fire();
         });
 

@@ -1,11 +1,12 @@
 <?php
 
-namespace app;
+namespace app\Controllers;
 
+use app\CentralServer;
 use Carbon\Carbon;
 use src\redis\RedisConnection;
 
-class WsController{
+class EnemySyncController{
 
 	protected RedisConnection $redis;
 

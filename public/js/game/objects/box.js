@@ -30,7 +30,7 @@ export default class extends BaseObject{
 
     draw(){
         if(!this.rotation) {
-            const ctx = globals().ctx();
+            const ctx = globals().getCtx();
             ctx.rect(this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);
             ctx.fillStyle = this.color;
             ctx.fill();
