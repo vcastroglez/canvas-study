@@ -13,7 +13,7 @@ class Router{
 
 	public static function resolve(array $request, mixed $extra = null, bool $return = false)
 	{
-		$route = $request['route'] ?? $request['action'] ?: '/';
+		$route = $request['route'] ?? $request['action'] ?? '/';
 		$params = $request;
 		unset($params['route']);
 		$handler = self::$routes[$route];
