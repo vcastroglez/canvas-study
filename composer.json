@@ -5,7 +5,8 @@
 	"predis/predis": "^2.2",
 	"spatie/async": "^1.6",
 	"nesbot/carbon": "^2.70",
-	"ext-pcntl": "*"
+	"ext-pcntl": "*",
+	"ext-sockets": "*"
   },
   "autoload": {
 	"psr-4": {

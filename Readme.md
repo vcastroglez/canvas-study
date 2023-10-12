@@ -14,3 +14,4 @@
 - ws-client have a router as a property
 - unify player and enemy
 - webpack
+- dynamic fields getting for enemies and deleting players

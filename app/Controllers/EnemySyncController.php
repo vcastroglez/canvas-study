@@ -17,40 +17,28 @@ class EnemySyncController{
 
 	public function sendEnemy($user, CentralServer $ws_server): void
 	{
-		if(is_array($user)){
+		if(is_array($user)) {
 			$user = $user['user'] or throw new \Exception('Wrong payload in sendEnemy');
 		}
-		$enemy = $this->getRandomEnemy($user);
-		if(!empty($enemy)) {
-			$ws_server->send($user, [
-				'action' => 'enemy',
-				'data'   => $enemy
-			]);
-		} else {
-			$ws_server->send($user, [
-				'action' => 'no-enemy',
-				'data'   => "nobody connected"
-			]);
-		}
-	}
 
-
-	public function getRandomEnemy($user): ?array
-	{
-		$this->redis->cleanOldUsers();
-		$connected_users = $this->redis->redis->hgetall('users');
-		unset($connected_users[$user->id]);
-		if(!empty($connected_users)) {
-			$random = array_rand($connected_users);
-			return [
-				'player'   => $random,
-				'position' => json_decode($this->redis->hget($random, 'position'), true),
-				'mouse'    => json_decode($this->redis->hget($random, 'mouse'), true),
-				'info'     => json_decode($this->redis->hget($random, 'info'), true),
+		$enemies = $this->redis->redis->hgetall('users');
+		$enemies = array_diff_key($enemies, [$user->id => 1]);
+		$to_send = [];
+		foreach($enemies as $key => $enemy) {
+			$to_send[] = [
+				'id'        => $key,
+				'ts'        => $enemy,
+				'mouse'     => $this->redis->hget($key, 'mouse'),
+				'proj'      => $this->redis->hget($key, 'proj'),
+				'prosition' => $this->redis->hget($key, 'position'),
+				'info'      => $this->redis->hget($key, 'info'),
 			];
-		} else {
-			return null;
 		}
+
+		$ws_server->send($user, [
+			'action' => 'enemies',
+			'data'   => $to_send
+		]);
 	}
 
 	public function connected($payload, CentralServer $ws_server): void
@@ -64,33 +52,11 @@ class EnemySyncController{
 		$this->sendEnemy($user, $ws_server);
 	}
 
-	public function updateEnemy($payload, CentralServer $ws_server): void
+	public function updateEnemies($payload, CentralServer $ws_server): void
 	{
 		$redis = $this->redis;
 		$user = $payload['user'];
 
-		$enemy_position = $redis->hget($payload['id'], 'position');
-		$enemy_mouse = $redis->hget($payload['id'], 'mouse');
-		$enemy_info = $redis->hget($payload['id'], 'info');
-		if(!$enemy_position) {
-			$enemy = $this->getRandomEnemy($user);
-			if(!$enemy) {
-				$ws_server->send($user, [
-					'action' => 'no-enemy',
-					'data'   => "nobody connected"
-				]);
-				return;
-			}
-			$id = $enemy['player'];
-			$position = $enemy['position'];
-			$mouse = $enemy['mouse'];
-			$info = $enemy['info'];
-		} else {
-			$id = $payload['id'];
-			$position = json_decode($enemy_position, true);
-			$mouse = json_decode($enemy_mouse ?? "[]", true);
-			$info = json_decode($enemy_info ?? "[]", true);
-		}
 		$ws_server->send($user, [
 			'action' => 'update-enemy',
 			'data'   => [

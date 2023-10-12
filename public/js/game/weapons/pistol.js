@@ -54,7 +54,7 @@ export class pistol {
 	}
 
 	drawProjectiles() {
-		this.projectiles.forEach((proj, index) => {
+		this.projectiles?.forEach((proj, index) => {
 			this.drawProjectile(proj, index, this.stack);
 		})
 	}
@@ -67,10 +67,10 @@ export class pistol {
 
 			let isFinished = false;
 			if (this.stack === 'player') {
-				const enemyHit = g().enemy.inBound(proj.x, proj.y);
+				const enemyHit = g().enemies.inBound(proj.x, proj.y);
 				const bosonHit = g().level.inBoundBosons(proj.x, proj.y, proj.size);
 				const leptonHit = g().level.inBoundLeptons(proj.x, proj.y, proj.size);
-				if (enemyHit || bosonHit || leptonHit) {
+				if (enemyHit || bosonHit) {
 					let event = new CustomEvent("hit-enemy");
 					document.getElementById('mainCanvas').dispatchEvent(event);
 				}

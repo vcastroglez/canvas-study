@@ -2,6 +2,7 @@ import Player from "../game/players/Player.js";
 import Drawing from "../game/drawing.js";
 import Level from "../game/objects/Level.js";
 import Enemy from "../game/players/Enemy.js";
+import Enemies from "../game/players/Enemies.js";
 
 export const canvas = {
 	width: window.innerWidth,
@@ -11,10 +12,10 @@ export const canvas = {
 class Game {
 	mainCanvas = document.getElementById('mainCanvas');
 	player = new Player(true);
-	enemy = new Enemy();
+	enemies = new Enemies();
 	drawing = new Drawing();
 	level = new Level();
-	server = new WebSocket("ws://piupiu.alpec.cu:8080");//"ws://piupiu.alpec.cu:8080"
+	server = new WebSocket("ws://piupiu.kama.com:8080");//"ws://piupiu.alpec.cu:8080"
 	server_connected = false;
 	stopGame = false;
 
@@ -34,7 +35,7 @@ class Game {
 		this.mainCanvas.width = window.innerWidth;
 		this.level.draw(avgFrames);
 		this.player.draw();
-		this.enemy.draw();
+		this.enemies.draw();
 	}
 }
 

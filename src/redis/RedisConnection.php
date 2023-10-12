@@ -71,7 +71,7 @@ class RedisConnection{
 
 	public function hget(string $key, string $field)
 	{
-		return $this->redis->hget($key, $field);
+		return json_decode($this->redis->hget($key, $field), true);
 	}
 
 	public function hdel($key, $fields)

@@ -69,8 +69,5 @@ export default class {
 		ctx.fillStyle = 'gray';
 		ctx.fillText("WASD te mueves y click disparas", 10, g().mainCanvas.height - 50);
 		ctx.restore();
-		ctx.font = "16px serif";
-		ctx.fillStyle = 'red';
-		ctx.fillText("Enemy: " + g().enemy.points, 10, 86);
 	}
 }

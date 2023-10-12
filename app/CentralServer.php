@@ -37,7 +37,9 @@ class CentralServer extends WebSocketServer{
 	{
 		$this->redis->hdel($user->id, [
 			'position',
-			'mouse'
+			'mouse',
+			'info',
+			'proj',
 		]);
 		$this->redis->hdel('users', [$user->id]);
 	}

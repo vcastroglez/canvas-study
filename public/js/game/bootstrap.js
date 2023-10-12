@@ -42,17 +42,19 @@ function frameDraw() {
 	}
 
 	if (g().server_connected) {
-		g().server.send(JSON.stringify(
-			{
-				action: 'position',
-				data: g().player.position,
-				info: {
-					size: g().player.size,
+		const request = {
+			route: 'self-status',
+			data: {
+				position: g().player.position,
+				stats: {
+					site: g().player.size,
 					points: g().player.points,
-					projectiles: g().player.weapon.projectiles,
-				}
+				},
+				mouse: g().player.controls.position,
+				proj: g().player.weapon.projectiles
 			}
-		));
-		g().server.send(JSON.stringify({action: 'mouse', data: g().player.controls.position}));
+		}
+
+		g().server.send(JSON.stringify(request));
 	}
 }
