@@ -123,7 +123,7 @@ abstract class WebSocketServer{
 							case 121: // EREMOTEIO    -- Rempte I/O error -- Their hard drive just blew up.
 							case 125: // ECANCELED    -- Operation canceled
 
-								$this->stderr("Unusual disconnect on socket ".$socket);
+								$this->stderr("Unusual disconnect on socket ".json_encode($socket));
 								$this->disconnect($socket, true, $sockErrNo); // disconnect before clearing error, in case someone with their own implementation wants to check for error conditions on the socket.
 								break;
 							default:
