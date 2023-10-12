@@ -30,7 +30,7 @@ class EnemySyncController{
 				'ts'        => $enemy,
 				'mouse'     => $this->redis->hget($key, 'mouse'),
 				'proj'      => $this->redis->hget($key, 'proj'),
-				'prosition' => $this->redis->hget($key, 'position'),
+				'position' => $this->redis->hget($key, 'position'),
 				'info'      => $this->redis->hget($key, 'info'),
 			];
 		}
@@ -50,21 +50,5 @@ class EnemySyncController{
 			'data'   => $user->id
 		]);
 		$this->sendEnemy($user, $ws_server);
-	}
-
-	public function updateEnemies($payload, CentralServer $ws_server): void
-	{
-		$redis = $this->redis;
-		$user = $payload['user'];
-
-		$ws_server->send($user, [
-			'action' => 'update-enemy',
-			'data'   => [
-				'player'   => $id,
-				'position' => $position,
-				'mouse'    => $mouse,
-				'info'     => $info,
-			]
-		]);
 	}
 }

@@ -8,5 +8,4 @@ require_once APP_DIR.'/Router.php';
 
 Router::route('self-status',[PlayerStatusController::class, 'updateStatus']);
 Router::route('connected', [EnemySyncController::class, 'connected']);
-Router::route('update-enemies', [EnemySyncController::class,'updateEnemies']);
 Router::route('get-enemy', [EnemySyncController::class, 'sendEnemy']);

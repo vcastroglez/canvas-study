@@ -47,7 +47,7 @@ function frameDraw() {
 			data: {
 				position: g().player.position,
 				stats: {
-					site: g().player.size,
+					size: g().player.size,
 					points: g().player.points,
 				},
 				mouse: g().player.controls.position,
