@@ -22,7 +22,6 @@ export default class {
 			const c2 = y - enemy.position.y;
 			const d = Math.sqrt(Math.pow(c1, 2) + Math.pow(c2, 2));
 			const touching = d <= ((enemy.info.size / 2) + r / 2);
-			console.log(enemy.info.size);
 			if (touching) {
 				isInBound = true;
 				break;
@@ -43,7 +42,7 @@ export default class {
 		}).sort((a, b) => a - b);
 
 		points.forEach((point, index) => {
-			g().drawing.drawText(`player ${index}: ${points}`, 25, 10, (index + 2) * 40, 'lightblue');
+			g().drawing.drawText(`Enemy ${index+1}: ${points}`, 25, 10, ((index + 2) * 40) + 10, 'lightblue');
 		})
 	}
 }
