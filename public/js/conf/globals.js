@@ -15,7 +15,7 @@ class Game {
 	enemies = new Enemies();
 	drawing = new Drawing();
 	level = new Level();
-	server = new WebSocket("ws://piupiu.kama.com:8080");//"ws://piupiu.alpec.cu:8080"
+	server = new WebSocket("ws://81.28.6.236:8080");//"ws://piupiu.alpec.cu:8080"
 	server_connected = false;
 	stopGame = false;
 
