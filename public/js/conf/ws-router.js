@@ -6,7 +6,6 @@ const routes = {
 	},
 	'enemies': (data) => {
 		g().enemies.enemies = data;
-		console.log(data);
 	},
 }
 
