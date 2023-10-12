@@ -42,5 +42,14 @@ export default class {
 		const offset = text.length * 7.5;
 		ctx.fillText(text, g().mainCanvas.width / 2 - offset, g().mainCanvas.height / 2);
 	}
+
+	drawText(text, size, x, y, color) {
+		const ctx = g().getCtx();
+		ctx.save();
+		ctx.font = size + "px serif";
+		ctx.fillStyle = color;
+		ctx.fillText(text, x, y);
+		ctx.restore();
+	}
 }
 

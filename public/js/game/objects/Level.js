@@ -13,25 +13,25 @@ export default class {
 	}
 
 	buildLevel() {
-		this.bosonObjects.push(
-			new circle(
-				Math.round(Math.random() * canvas.width),
-				Math.round(Math.random() * canvas.height),
-				10,
-				'#e7b63f',
-				0.3,
-				0.3,
-				7)
-		);
-		this.leptonObjects.push(
-			new box(
-				111,
-				111,
-				111,
-				20,
-				'#3fe7ce'
-			)
-		);
+		// this.bosonObjects.push(
+		// 	new circle(
+		// 		Math.round(Math.random() * canvas.width),
+		// 		Math.round(Math.random() * canvas.height),
+		// 		10,
+		// 		'#e7b63f',
+		// 		0.3,
+		// 		0.3,
+		// 		7)
+		// );
+		// this.leptonObjects.push(
+		// 	new box(
+		// 		111,
+		// 		111,
+		// 		111,
+		// 		20,
+		// 		'#3fe7ce'
+		// 	)
+		// );
 	}
 
 	draw(avgFrames) {
