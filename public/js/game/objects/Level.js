@@ -65,7 +65,7 @@ export default class {
 		ctx.font = "36px serif";
 		ctx.fillStyle = 'red';
 		ctx.fillText("Points: " + g().player.points, 10, 50);
-		ctx.fillText("FPS: " + avgFrames, g().mainCanvas.width - 200, 50);
+		ctx.fillText("FPS: " + avgFrames, window.innerWidth - 200, 50);
 		ctx.fillStyle = 'gray';
 		ctx.fillText("WASD te mueves y click disparas", 10, g().mainCanvas.height - 50);
 		ctx.restore();

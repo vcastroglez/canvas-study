@@ -4,9 +4,15 @@
     <meta charset="UTF-8">
     <meta id="WS_URL" content="{{ env('WS_URL') }}">
     <title>Piu piu</title>
+    <style>
+        canvas {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
 <body style="padding: 0;margin: 0;border: 0;overflow: hidden">
-<canvas id="mainCanvas" width="800" height="600"></canvas>
+<canvas id="mainCanvas" width="3200" height="2000"></canvas>
 <script type="module" src="js/app.js" defer></script>
 </body>
 </html>

@@ -67,14 +67,15 @@ export class pistol {
 
 			let isFinished = false;
 			if (this.stack === 'player') {
-				const enemyHit = g().enemies.inBound(proj.x, proj.y);
+				const enemyHit = g().enemies.inBound(proj.x, proj.y, proj.size);
 				const bosonHit = g().level.inBoundBosons(proj.x, proj.y, proj.size);
 				const leptonHit = g().level.inBoundLeptons(proj.x, proj.y, proj.size);
+				const outOfBound = !g().inBound(proj.x, proj.y);
 				if (enemyHit || bosonHit) {
 					let event = new CustomEvent("hit-enemy");
 					document.getElementById('mainCanvas').dispatchEvent(event);
 				}
-				isFinished = enemyHit || bosonHit || leptonHit;
+				isFinished = enemyHit || bosonHit || leptonHit || outOfBound;
 			}
 			hit = isFinished || g().drawing.drawEllipse(
 				proj.x,
