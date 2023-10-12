@@ -15,9 +15,14 @@ class Game {
 	enemies = new Enemies();
 	drawing = new Drawing();
 	level = new Level();
-	server = new WebSocket("ws://81.28.6.236:8080");//"ws://piupiu.alpec.cu:8080"
+	server = null;
 	server_connected = false;
 	stopGame = false;
+
+	constructor() {
+		const url = document.getElementById('WS_URL').content;
+		this.server = new WebSocket(url);//
+	}
 
 	getCtx() {
 		return this.mainCanvas.getContext('2d');

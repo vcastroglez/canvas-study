@@ -6,7 +6,8 @@
 	"spatie/async": "^1.6",
 	"nesbot/carbon": "^2.70",
 	"ext-pcntl": "*",
-	"ext-sockets": "*"
+	"ext-sockets": "*",
+    "vlucas/phpdotenv": "^5.5"
   },
   "autoload": {
 	"psr-4": {
