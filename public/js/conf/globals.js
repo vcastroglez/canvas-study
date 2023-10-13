@@ -54,6 +54,7 @@ export default function () {
 	if (instance) {
 		return instance;
 	}
+	console.log(`xxxxxxxxxxxxxx`);
 	instance = new Game();
 	return instance;
 }
