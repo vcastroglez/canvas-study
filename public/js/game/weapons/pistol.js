@@ -20,11 +20,23 @@ export class pistol {
 	}
 	theta = 0;
 	last_shoot = 0;
+	autofire = false;
 
 	constructor(color, stack) {
 		this.color = color || 'red';
 		this.projectile_info.color = this.color;
 		this.stack = stack;
+		document.getElementById('mainCanvas').addEventListener("player-shooting", event => {
+			event.preventDefault();
+			if (event.detail.angle) {
+				this.theta = event.detail.angle;
+				this.autofire = true;
+			}
+		}, {passive: false});
+		document.getElementById('mainCanvas').addEventListener("player-not-shooting", event => {
+			event.preventDefault();
+			this.autofire = false;
+		}, {passive: false});
 	}
 
 	fire() {
@@ -40,12 +52,18 @@ export class pistol {
 		}
 	}
 
-	draw(mouseX, mouseY, playerX, playerY, size) {
-		const dx = mouseX - playerX;
-		const dy = mouseY - playerY;
-		this.theta = Math.atan2(dy, dx);
-		this.position.x = playerX + (size + this.size * 1.5) * Math.cos(this.theta)
-		this.position.y = playerY - (size + this.size * 1.5) * Math.sin(-this.theta)
+	draw(x, y, angle, size) {
+		if (this.autofire) {
+			x = g().player.position.x;
+			y = g().player.position.y;
+			size = g().player.size;
+			angle = this.theta;
+			this.fire();
+		} else {
+			this.theta = angle;
+		}
+		this.position.x = x + (size + this.size * 1.5) * Math.cos(angle)
+		this.position.y = y - (size + this.size * 1.5) * Math.sin(-angle)
 		if (this.body === 'circle') {
 			g().drawing.drawCircle(this.position.x, this.position.y, this.size, this.color);
 		}

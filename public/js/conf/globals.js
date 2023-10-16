@@ -47,6 +47,12 @@ class Game {
 		}
 		return true;
 	}
+
+	getAngle(cx, cy, ex, ey) {
+		const dy = ey - cy;
+		const dx = ex - cx;
+		return Math.atan2(dy, dx);
+	}
 }
 
 let instance = null;

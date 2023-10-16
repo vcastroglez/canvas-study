@@ -87,7 +87,10 @@ export default class {
 			g().drawing.drawCircle(this.position.x, this.position.y, this.size, this.color);
 		}
 
-		this.weapon.draw(this.controls.position.x, this.controls.position.y, this.position.x, this.position.y, this.size);
+		const dx = this.controls.position.x - this.position.x;
+		const dy = this.controls.position.y - this.position.y;
+		const angle = Math.atan2(dy, dx);
+		this.weapon.draw(this.position.x, this.position.y, angle, this.size);
 	}
 
 	listenEvents() {
