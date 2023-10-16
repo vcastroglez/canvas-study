@@ -9,6 +9,10 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        body {
+            overflow: hidden;
+        }
     </style>
 </head>
 <body style="padding: 0;margin: 0;border: 0;overflow: hidden">

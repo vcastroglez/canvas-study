@@ -17,7 +17,7 @@ export default class extends BaseObject {
 	 * @param yd direction in y
 	 * @param s speed
 	 */
-	constructor(x, y, r, color, xd = 1, yd = 0, s = 5) {
+	constructor(x, y, r, color, xd = 0, yd = 0, s = 0) {
 		super();
 		this.x = x;
 		this.y = y;

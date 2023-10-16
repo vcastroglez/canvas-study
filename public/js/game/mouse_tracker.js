@@ -1,4 +1,5 @@
 import g from "../conf/globals.js";
+import Circle from "./objects/circle.js";
 
 export default class {
 	inclination_speed = 5;
@@ -6,20 +7,81 @@ export default class {
 	touchs = [];
 	position = {};
 	isMobile = false;
+	touch_left_start = null;
+	touch_left_drag = null;
+	touch_right_drag = null;
 
 	constructor() {
 		this.isMobile = this.detectMobile();
-		if(!this.isMobile) {
+		if (!this.isMobile) {
 			this.initKeyboardEvents();
-		}else{
+		} else {
 			this.initTouchEvents();
 		}
 	}
 
-	initTouchEvents(){
-		addEventListener('touchstart',(event)=>{
-			this.touchs[even.which] = 1;//continue here
+	initTouchEvents() {
+		addEventListener('touchstart', (event) => {
+			event.preventDefault();
+			event.stopImmediatePropagation();
+			const touchList = event.changedTouches;
+			for (let i = 0; i < touchList.length; i++) {
+				const touch = touchList[i];
+				const x = touch.clientX;
+				const y = touch.clientY;
+				if (x < (window.visualViewport.width / 2)) {
+					this.touch_left_start = {x, y};
+					g().level.bosonObjects.push(new Circle(x, y, 10, 'black'));
+				} else {
+					this.touch_right_start = {x, y};
+					g().level.bosonObjects.push(new Circle(x, y, 10, 'blue'));
+				}
+			}
+		}, {passive: false});
+
+		addEventListener('touchmove', (event) => {
+			const touchList = event.changedTouches;
+			for (let i = 0; i < touchList.length; i++) {
+				const touch = touchList[i];
+				const x = touch.clientX;
+				const y = touch.clientY;
+				if (x < (window.visualViewport.width / 2)) {
+					this.touch_left_drag = {x, y};
+					g().level.bosonObjects.push(new Circle(x, y, 10, 'black'));
+				} else {
+					this.touch_right_drag = {x, y};
+					g().level.bosonObjects.push(new Circle(x, y, 10, 'blue'));
+				}
+
+			}
 		})
+
+		addEventListener('touchend', (event) => {
+			this.cancelTouches(event);
+		})
+
+		addEventListener('touchcancel', (event) => {
+			this.cancelTouches(event);
+		})
+	}
+
+	cancelTouches(event) {
+		const touchList = event.changedTouches;
+		for (let i = 0; i < touchList.length; i++) {
+			const touch = touchList[i];
+			const x = touch.clientX;
+			const y = touch.clientY;
+			if (x < (window.visualViewport.width / 2)) {
+				this.touch_left_start = {};
+				this.touch_left_drag = {};
+				g().level.bosonObjects = [];
+			} else {
+				this.touch_right_start = {};
+				this.touch_right_drag = {};
+				g().level.bosonObjects = [];
+			}
+
+		}
 	}
 
 	detectMobile() {
