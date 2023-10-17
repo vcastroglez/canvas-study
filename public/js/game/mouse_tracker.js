@@ -21,7 +21,7 @@ export default class {
 	}
 
 	initTouchEvents() {
-		addEventListener('deviceorientation',(event)=>{
+		addEventListener('orientationchange',(event)=>{
 			window.location.reload();
 		},true);
 		addEventListener('touchstart', (event) => {

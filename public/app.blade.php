@@ -16,7 +16,7 @@
     </style>
 </head>
 <body id="body" style="padding: 0;margin: 0;border: 0;overflow: hidden">
-<canvas id="mainCanvas" width="3200" height="2000"></canvas>
+<canvas id="mainCanvas" width="5000" height="5000"></canvas>
 <script type="module" src="js/app.js" defer></script>
 </body>
 </html>
