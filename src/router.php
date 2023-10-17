@@ -9,4 +9,10 @@ Router::route('/', function(){
 	die;
 });
 
+Router::route('reset-ws',function(){
+	$output=null;
+	exec('systemctl restart piu-socket',$output);
+	dd($output);//tovla
+});
+
 Router::resolve($_REQUEST);

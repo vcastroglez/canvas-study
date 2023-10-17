@@ -21,6 +21,9 @@ export default class {
 	}
 
 	initTouchEvents() {
+		addEventListener('deviceorientation',(event)=>{
+			window.location.reload();
+		},true);
 		addEventListener('touchstart', (event) => {
 			event.preventDefault();
 			event.stopImmediatePropagation();
@@ -31,10 +34,10 @@ export default class {
 				const y = touch.clientY;
 				if (x < (window.visualViewport.width / 2)) {
 					this.touch_left_start = {x, y};
-					g().level.bosonObjects.push(new Circle(x, y, touch.radiusX * 1.1, 'black'));
+					g().level.bosonObjects.push(new Circle(x, y, 40, 'black'));
 				} else {
 					this.touch_right_start = {x, y};
-					g().level.bosonObjects.push(new Circle(x, y, touch.radiusX * 1.1, 'blue'));
+					g().level.bosonObjects.push(new Circle(x, y, 40, 'blue'));
 				}
 			}
 		}, {passive: false});
