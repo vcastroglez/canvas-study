@@ -4,7 +4,7 @@ import Level from "../game/objects/Level.js";
 import Enemies from "../game/players/Enemies.js";
 
 export const canvas = {
-	width: window.innerWidth, height: window.innerHeight
+	width: 5000, height: 5000
 }
 
 class Game {
@@ -60,7 +60,7 @@ export default function () {
 	if (instance) {
 		return instance;
 	}
-	console.log(`xxxxxxxxxxxxxx`);
+	console.log(`Instance created`);
 	instance = new Game();
 	return instance;
 }

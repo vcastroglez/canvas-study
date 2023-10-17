@@ -40,7 +40,7 @@ export default class {
 		ctx.font = "40px serif";
 		ctx.fillStyle = 'green';
 		const offset = text.length * 7.5;
-		ctx.fillText(text, g().mainCanvas.width / 2 - offset, g().mainCanvas.height / 2);
+		ctx.fillText(text, window.visualViewport.width / 2 - offset, window.visualViewport.height / 2);
 	}
 
 	drawText(text, size, x, y, color) {

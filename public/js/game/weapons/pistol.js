@@ -95,13 +95,12 @@ export class pistol {
 				}
 				isFinished = enemyHit || bosonHit || leptonHit || outOfBound;
 			}
-			hit = isFinished || g().drawing.drawEllipse(
+			hit = isFinished || g().drawing.drawCircle(
 				proj.x,
 				proj.y,
 				proj.size,
-				proj.size,
 				proj.color,
-				true);
+				);
 		}
 
 		if (hit) {

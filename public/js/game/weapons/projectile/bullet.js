@@ -2,10 +2,10 @@ import globals from "../../../conf/globals.js";
 
 export default class {
     speed = 1;
-    speed_rate = 5;
+    speed_rate = 1;
     theta = 1;
     shape = 'bullet';
-    size = 10;
+    size = 5;
     x = 0;
     y = 0;
     color = 'blue';

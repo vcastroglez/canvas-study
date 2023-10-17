@@ -8,12 +8,11 @@ export default class {
 	color = 'gray';
 	weapon = new pistol('red', 'player');
 	position = {
-		x: 0.5 * canvas.width,
-		y: 0.5 * canvas.height
+		x: 0.5 * window.visualViewport.width,
+		y: 0.5 * window.visualViewport.height
 	};
-	health = 100;
-	speed = 0.006;
-	movement_speed = {x: canvas.width * this.speed, y: canvas.width * this.speed};
+	speed = 5;
+	movement_speed = {x: this.speed, y: this.speed};
 	id = null;
 	controls = null;
 	points = 0;
