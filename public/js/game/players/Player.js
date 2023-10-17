@@ -5,7 +5,7 @@ import MouseTracker from "../mouse_tracker.js";
 export default class {
 	size = 20;
 	shape = 'circle';
-	color = 'gray';
+	color = 'black';
 	weapon = new pistol('red', 'player');
 	position = {
 		x: 0.5 * window.visualViewport.width,

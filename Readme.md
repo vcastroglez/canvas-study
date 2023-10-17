@@ -3,6 +3,8 @@
 - ~~Player have a tracker~~
 - ~~Unify WS communication (ws msg queue)~~
 - ~~Allow multiple opponents~~
+- follow the player with the cam
+- background to the canvas
 - Calculate projectile_info path on server-side
 - Keep match state on server-side
 - Cookie for user session

@@ -16,10 +16,16 @@ class Game {
 	server = null;
 	server_connected = false;
 	stopGame = false;
+	bgImg = null;
 
 	constructor() {
 		const url = document.getElementById('WS_URL').content;
-		this.server = new WebSocket(url);//
+		this.server = new WebSocket(url);
+		const bgImg = new Image();
+		bgImg.src = '/bgImg.jpg';
+		bgImg.addEventListener("load", () => {
+			this.bgImg = bgImg;
+		}, {once: true});
 	}
 
 	getCtx() {
@@ -36,6 +42,10 @@ class Game {
 	draw(avgFrames) {
 		this.mainCanvas.height = 2000;
 		this.mainCanvas.width = 3200;
+		if(this.bgImg) {
+			this.mainCanvas.getContext('2d').drawImage(this.bgImg, 0, 0,window.visualViewport.width,window.visualViewport.height);
+		}
+
 		this.level.draw(avgFrames);
 		this.player.draw();
 		this.enemies.draw();
