@@ -89,11 +89,11 @@ export class pistol {
 				const bosonHit = g().level.inBoundBosons(proj.x, proj.y, proj.size);
 				const leptonHit = g().level.inBoundLeptons(proj.x, proj.y, proj.size);
 				const outOfBound = !g().inBound(proj.x, proj.y);
-				if (enemyHit || bosonHit) {
+				if (enemyHit) {
 					let event = new CustomEvent("hit-enemy");
 					document.getElementById('mainCanvas').dispatchEvent(event);
 				}
-				isFinished = enemyHit || bosonHit || leptonHit || outOfBound;
+				isFinished = enemyHit || leptonHit || outOfBound;
 			}
 			hit = isFinished || g().drawing.drawCircle(
 				proj.x,
