@@ -21,11 +21,17 @@ class Game {
 	constructor() {
 		const url = document.getElementById('WS_URL').content;
 		this.server = new WebSocket(url);
-		const bgImg = new Image();
-		bgImg.src = '/bgImg.jpg';
-		bgImg.addEventListener("load", () => {
-			this.bgImg = bgImg;
-		}, {once: true});
+		this.viewportWidth = window.visualViewport.width;
+		this.viewportHeight = window.visualViewport.height;
+		// const bgImg = new Image();
+		// bgImg.src = '/bgImg.jpg';
+		// bgImg.addEventListener("load", () => {
+		// 	const context = this.mainCanvas.getContext('2d');
+		// 	// Create a pattern with this image, and set it to "repeat".
+		// 	context.fillStyle = context.createPattern(bgImg, 'repeat');
+		// 	context.fillRect(0, 0, this.viewportWidth, this.viewportHeight);
+		// 	this.bgImg = context.createPattern(bgImg, 'repeat');
+		// }, {once: true});
 	}
 
 	getCtx() {
@@ -40,15 +46,15 @@ class Game {
 	}
 
 	draw(avgFrames) {
-		this.mainCanvas.height = 2000;
-		this.mainCanvas.width = 3200;
-		if(this.bgImg) {
-			this.mainCanvas.getContext('2d').drawImage(this.bgImg, 0, 0,window.visualViewport.width,window.visualViewport.height);
-		}
-
+		const x = this.player.position.x - this.viewportWidth;
+		const y = this.player.position.y - this.viewportHeight;
+		this.getCtx().clearRect(0, 0, this.viewportWidth, this.viewportHeight);
 		this.level.draw(avgFrames);
+		this.getCtx().save();
+		this.getCtx().translate(-this.player.position.x + (window.visualViewport.width * 0.5), -this.player.position.y + (window.visualViewport.height * 0.5));
 		this.player.draw();
 		this.enemies.draw();
+		this.getCtx().restore();
 	}
 
 	inBound(x, y) {

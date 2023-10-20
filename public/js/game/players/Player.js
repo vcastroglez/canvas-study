@@ -85,9 +85,10 @@ export default class {
 		if (this.shape === 'circle') {
 			g().drawing.drawCircle(this.position.x, this.position.y, this.size, this.color);
 		}
-
-		const dx = this.controls.position.x - this.position.x;
-		const dy = this.controls.position.y - this.position.y;
+		const controlX = this.position.x - (g().viewportWidth * 0.5) + this.controls.position.x;
+		const controlY = this.position.y - (g().viewportHeight * 0.5) + this.controls.position.y;
+		const dx = controlX - this.position.x;
+		const dy = controlY - this.position.y;
 		const angle = Math.atan2(dy, dx);
 		this.weapon.draw(this.position.x, this.position.y, angle, this.size);
 	}
