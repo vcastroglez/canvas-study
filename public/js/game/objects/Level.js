@@ -1,6 +1,4 @@
-import circle from "./circle.js";
-import g, {canvas} from "../../conf/globals.js";
-import box from "./box.js";
+import g from "../../conf/globals.js";
 
 export default class {
 	bosonObjects = [];
@@ -51,6 +49,7 @@ export default class {
 			}
 		}
 	}
+
 	inBoundLeptons(x, y, size) {
 		for (let i = 0; i < this.leptonObjects.length; i++) {
 			if (this.leptonObjects[i].inBound(x, y, size)) {
@@ -61,13 +60,10 @@ export default class {
 
 	drawUI(avgFrames) {
 		const ctx = g().getCtx();
-		ctx.save();
-		ctx.font = "36px serif";
-		ctx.fillStyle = 'red';
-		ctx.fillText("Points: " + g().player.points, 10, 50);
-		ctx.fillText("FPS: " + avgFrames, window.innerWidth - 200, 50);
-		ctx.fillStyle = 'gray';
-		ctx.fillText("WASD te mueves y click disparas", 10, g().mainCanvas.height - 50);
-		ctx.restore();
+		g().drawing.drawText("Points: " + g().player.points, 36, 10, 50, 'red');
+		g().drawing.drawText("FPS: " + avgFrames, 36, window.innerWidth - 200, 50, 'red');
+		g().enemies.points.forEach((points, index) => {
+			g().drawing.drawText(`enemy ${index + 1}: ${points}`, 20, 10, ((index + 2) * 40) + 10, 'red');
+		})
 	}
 }

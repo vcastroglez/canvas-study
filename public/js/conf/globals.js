@@ -54,10 +54,10 @@ class Game {
 		for (let i = 0 ;i < canvas.width; i += canvas.width/100){
 			const A = {x:i,y:0};
 			const B = {x:i,y:canvas.height};
-			this.drawing.drawLine(A,B,4,'black');
+			this.drawing.drawLine(A,B,4,'rgba(0,0,0,0.2)');
 			const A2 = {x:0,y:i};
 			const B2 = {x:canvas.width,y:i};
-			this.drawing.drawLine(A2,B2,4,'black');
+			this.drawing.drawLine(A2,B2,4,'rgba(0,0,0,0.2)');
 		}
 	}
 

@@ -65,7 +65,8 @@ export default class {
 		ctx.beginPath();
 		ctx.moveTo(A.x,A.y);
 		ctx.lineTo(B.x,B.y);
-		ctx.strokeStyle = `${size}px solid ${color}`;
+		ctx.strokeWidth = `${size}px`;
+		ctx.strokeStyle = `${color}`;
 		ctx.stroke();
 	}
 }

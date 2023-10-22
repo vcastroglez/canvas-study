@@ -3,12 +3,13 @@ import g from "../../conf/globals.js";
 export default class {
 
 	enemies = [];
+	points = [];
 
 	constructor() {
 	}
 
 	draw() {
-		this.drawUI();
+		this.calculatePoints();
 		this.enemies.forEach((enemy) => {
 			this.drawEnemy(enemy);
 		})
@@ -18,6 +19,9 @@ export default class {
 		let isInBound = false;
 		for (let i = 0; i < this.enemies.length; i++) {
 			const enemy = this.enemies[i];
+			if(!enemy.position){
+				return;
+			}
 			const c1 = x - enemy.position.x;
 			const c2 = y - enemy.position.y;
 			const d = Math.sqrt(Math.pow(c1, 2) + Math.pow(c2, 2));
@@ -36,13 +40,9 @@ export default class {
 		g().drawing.drawCircle(enemy.position.x, enemy.position.y, enemy.info.size, 'red');
 	}
 
-	drawUI() {
-		let points = this.enemies.map(enemy => {
+	calculatePoints() {
+		this.points = this.enemies.map(enemy => {
 			return enemy?.info?.points || 0;
 		}).sort((a, b) => a - b);
-
-		points.forEach((point, index) => {
-			g().drawing.drawText(`Enemy ${index+1}: ${points}`, 25, 10, ((index + 2) * 40) + 10, 'lightblue');
-		})
 	}
 }
