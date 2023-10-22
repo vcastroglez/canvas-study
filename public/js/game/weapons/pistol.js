@@ -6,7 +6,7 @@ export class pistol {
 		shape: bullet,
 		type: 'physical',
 		fire_interval: 0.1,
-		speed: 3,
+		speed: 6,
 		weight: 1,
 		color: 'red',
 	};

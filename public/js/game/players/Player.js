@@ -8,8 +8,8 @@ export default class {
 	color = 'black';
 	weapon = new pistol('red', 'player');
 	position = {
-		x: 0.5 * window.visualViewport.width,
-		y: 0.5 * window.visualViewport.height
+		x: 0.5 * canvas.width,
+		y: 0.5 * canvas.height
 	};
 	speed = 5;
 	movement_speed = {x: this.speed, y: this.speed};

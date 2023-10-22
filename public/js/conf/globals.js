@@ -2,6 +2,7 @@ import Player from "../game/players/Player.js";
 import Drawing from "../game/drawing.js";
 import Level from "../game/objects/Level.js";
 import Enemies from "../game/players/Enemies.js";
+import drawing from "../game/drawing.js";
 
 export const canvas = {
 	width: 5000, height: 5000
@@ -23,15 +24,6 @@ class Game {
 		this.server = new WebSocket(url);
 		this.viewportWidth = window.visualViewport.width;
 		this.viewportHeight = window.visualViewport.height;
-		// const bgImg = new Image();
-		// bgImg.src = '/bgImg.jpg';
-		// bgImg.addEventListener("load", () => {
-		// 	const context = this.mainCanvas.getContext('2d');
-		// 	// Create a pattern with this image, and set it to "repeat".
-		// 	context.fillStyle = context.createPattern(bgImg, 'repeat');
-		// 	context.fillRect(0, 0, this.viewportWidth, this.viewportHeight);
-		// 	this.bgImg = context.createPattern(bgImg, 'repeat');
-		// }, {once: true});
 	}
 
 	getCtx() {
@@ -52,9 +44,25 @@ class Game {
 		this.level.draw(avgFrames);
 		this.getCtx().save();
 		this.getCtx().translate(-this.player.position.x + (window.visualViewport.width * 0.5), -this.player.position.y + (window.visualViewport.height * 0.5));
+		this.drawBackground();
 		this.player.draw();
 		this.enemies.draw();
 		this.getCtx().restore();
+	}
+
+	drawBackground(){
+		for (let i = 0 ;i < canvas.width; i += canvas.width/100){
+			const A = {x:i,y:0};
+			const B = {x:i,y:canvas.height};
+			this.drawing.drawLine(A,B,4,'black');
+			const A2 = {x:0,y:i};
+			const B2 = {x:canvas.width,y:i};
+			this.drawing.drawLine(A2,B2,4,'black');
+		}
+	}
+
+	lerp (A, B, T){
+		return A + (B-A) * T;
 	}
 
 	inBound(x, y) {

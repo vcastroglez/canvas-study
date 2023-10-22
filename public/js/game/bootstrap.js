@@ -11,6 +11,9 @@ const targetFPSTS = 16;
 export default function () {
 	g().setUpCanvas();
 	g().drawing.drawWholePageText("Loading...");
+	g().getCtx().save();
+	g().getCtx().translate(g().player.position.x, g().player.position.y);
+	g().getCtx().restore();
 	setTimeout(frameHandle, 1000);
 }
 

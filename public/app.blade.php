@@ -19,7 +19,7 @@
 </head>
 <body id="body" style="padding: 0;margin: 0;border: 0;overflow: hidden">
 <div id="wrapper">
-<canvas id="mainCanvas" width="5000" height="5000" style="background-image: url('{{ PUBLIC_DIR.'/bgImg.jpg'}}');background-repeat: repeat-x;"></canvas>
+<canvas id="mainCanvas" width="5000" height="5000" ></canvas>
 </div>
 <script type="module" src="js/app.js" defer></script>
 </body>

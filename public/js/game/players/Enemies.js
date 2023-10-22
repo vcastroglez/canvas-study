@@ -38,7 +38,7 @@ export default class {
 
 	drawUI() {
 		let points = this.enemies.map(enemy => {
-			return enemy.info.points;
+			return enemy?.info?.points || 0;
 		}).sort((a, b) => a - b);
 
 		points.forEach((point, index) => {

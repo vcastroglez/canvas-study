@@ -7,6 +7,14 @@ export default class {
 		ctx.arc(x, y, radius, 0, 2 * Math.PI);
 		ctx.fillStyle = color;
 		ctx.fill();
+		ctx.font = `14px serif`;
+		// ctx.fillStyle = color=='white'?'black':'white';
+		ctx.fillStyle = 'black';
+		let drawX = x.toFixed(0);
+		let drawY = y.toFixed(0);
+		drawX = drawX>1000?(drawX/1000).toFixed(1)+'k':drawX;
+		drawY = drawY>1000?(drawY/1000).toFixed(1)+'k':drawY;
+		ctx.fillText(`${drawX}:${drawY}`, x+radius+10, y);
 	}
 
 	drawEllipse(x, y, w, h, color, kill = true) {
@@ -50,6 +58,15 @@ export default class {
 		ctx.fillStyle = color;
 		ctx.fillText(text, x, y);
 		ctx.restore();
+	}
+
+	drawLine(A, B, size, color) {
+		const ctx = g().getCtx();
+		ctx.beginPath();
+		ctx.moveTo(A.x,A.y);
+		ctx.lineTo(B.x,B.y);
+		ctx.strokeStyle = `${size}px solid ${color}`;
+		ctx.stroke();
 	}
 }
 
