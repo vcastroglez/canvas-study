@@ -7,19 +7,29 @@
     <title>Piu piu</title>
     <style>
         canvas {
-            margin-left: auto;
-            margin-right: auto;
             border: 5px solid #f30808;
         }
 
         *, #wrapper {
             overflow: hidden !important;
         }
+
+        .canvas-layer {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 0;
+        }
+
+        .canvas-layer.fixed {
+            position: fixed;
+        }
     </style>
 </head>
 <body id="body" style="padding: 0;margin: 0;border: 0;overflow: hidden">
 <div id="wrapper">
-<canvas id="mainCanvas" width="5000" height="5000" ></canvas>
+    <canvas id="mainCanvas" class="canvas-layer" width="5000" height="5000"></canvas>
+    <canvas id="levelCanvas" class="canvas-layer fixed" width="5000" height="5000"></canvas>
 </div>
 <script type="module" src="js/app.js" defer></script>
 </body>

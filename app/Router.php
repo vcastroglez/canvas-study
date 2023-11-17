@@ -16,7 +16,7 @@ class Router{
 		$route = $request['route'] ?? $request['action'] ?: '/';
 		$params = $request;
 		unset($params['route']);
-		$handler = self::$routes[$route];
+		$handler = self::$routes[$route] ?? self::$routes["/$route"];
 		if(is_array($handler)) {
 			$class = $handler[0];
 			$function = $handler[1];

@@ -7,7 +7,7 @@
 - ~~background to the canvas~~
 - Multiple canvas layers
 - minimap
-- Cookie for user session
+~~- Cookie for user session~~
 - Calculate projectile_info path on server-side
 - Keep match state on server-side
 - MySQL database for historic and "session"

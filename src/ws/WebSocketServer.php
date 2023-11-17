@@ -2,6 +2,8 @@
 
 namespace src\ws;
 
+use Socket;
+
 abstract class WebSocketServer{
 
 	protected string $userClass = WebSocketUser::class; // redefine this if you want a custom user class.  The custom user class should inherit from WebSocketUser.
@@ -28,7 +30,7 @@ abstract class WebSocketServer{
 
 	abstract protected function process($user, $message); // Called immediately when the data is recieved.
 
-	abstract protected function connected($user);        // Called after the handshake response is sent to the client.
+	abstract protected function connected(WebSocketUser $user);        // Called after the handshake response is sent to the client.
 
 	abstract protected function closed($user);           // Called after the connection is closed.
 
@@ -97,13 +99,13 @@ abstract class WebSocketServer{
 			$this->_tick();
 			$this->tick();
 			@socket_select($read, $write, $except, 1);
-			foreach($read as $socket) {
+			foreach($read as $k=>$socket) {
 				if($socket == $this->master) {
 					$client = socket_accept($socket);
 					if($client < 0) {
 						$this->stderr("Failed: socket_accept()");
-						continue;
 					} else {
+						$this->stdout("CONNECT");
 						$user = $this->connect($client);
 						$this->stdout("Client connected. ".$user->id);
 					}
@@ -152,11 +154,11 @@ abstract class WebSocketServer{
 		}
 	}
 
-	protected function connect($socket)
+	protected function connect(Socket $client)
 	{
-		$user = new $this->userClass(uniqid('u'), $socket);
+		$user = new $this->userClass(uniqid('u'), $client);
 		$this->users[$user->id] = $user;
-		$this->sockets[$user->id] = $socket;
+		$this->sockets[$user->id] = $client;
 		$this->connecting($user);
 		return $user;
 	}

@@ -3,25 +3,30 @@
 namespace src\ws;
 class WebSocketUser implements \JsonSerializable{
 
-    public $socket;
-    public $id;
-    public $headers = array();
-    public $handshake = false;
+	public $socket;
+	public $id;
+	public $headers = array();
+	public $handshake = false;
 
-    public $handlingPartialPacket = false;
-    public $partialBuffer = "";
+	public $handlingPartialPacket = false;
+	public $partialBuffer = "";
 
-    public $sendingContinuous = false;
-    public $partialMessage = "";
+	public $sendingContinuous = false;
+	public $partialMessage = "";
 
-    public $hasSentClose = false;
+	public $hasSentClose = false;
 
-    function __construct($id, $socket){
-        $this->id = $id;
-        $this->socket = $socket;
-    }
+	function __construct($id, $socket)
+	{
+		$this->id = $id;
+		$this->socket = $socket;
+	}
 
-    public function jsonSerialize(): mixed{
-       return [$this->id,$this->socket];
-    }
+	public function jsonSerialize(): mixed
+	{
+		return [
+			$this->id,
+			$this->socket
+		];
+	}
 }

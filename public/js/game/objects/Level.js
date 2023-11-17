@@ -37,6 +37,7 @@ export default class {
 		this.bosonObjects.forEach((el) => {
 			el.draw()
 		});
+
 		this.leptonObjects.forEach((el) => {
 			el.draw()
 		});

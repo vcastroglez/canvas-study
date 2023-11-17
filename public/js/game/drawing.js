@@ -18,7 +18,7 @@ export default class {
 	}
 
 	drawEllipse(x, y, w, h, color, kill = true) {
-		if (kill && (y < 0 || y > g().mainCanvas.height)) {
+		if (kill && (y < 0 || y > g().selectedCanvas.height)) {
 			return true;
 		}
 		let ctx = g().getCtx();
@@ -44,7 +44,7 @@ export default class {
 
 	drawWholePageText(text) {
 		const ctx = g().getCtx();
-		ctx.clearRect(0, 0, g().mainCanvas.width, g().mainCanvas.height);
+		ctx.clearRect(0, 0, g().selectedCanvas.width, g().selectedCanvas.height);
 		ctx.font = "40px serif";
 		ctx.fillStyle = 'green';
 		const offset = text.length * 7.5;

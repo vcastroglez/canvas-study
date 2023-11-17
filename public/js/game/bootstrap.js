@@ -11,12 +11,31 @@ const targetFPSTS = 16;
 export default function () {
 	g().setUpCanvas();
 	g().drawing.drawWholePageText("Loading...");
-	g().getCtx().save();
-	g().getCtx().translate(g().player.position.x, g().player.position.y);
-	g().getCtx().restore();
+	g().getMCtx().save();
+	g().getLCtx().save();
+	g().getMCtx().translate(g().player.position.x, g().player.position.y);
+	g().getLCtx().translate(g().player.position.x, g().player.position.y);
+	g().getMCtx().restore();
+	g().getLCtx().restore();
+	g().drawBackground();
 	setTimeout(frameHandle, 1000);
 }
 
+export async function checkForName() {
+	let name = null;
+	let pass = null;
+	if (localStorage.getItem('identity')) {
+		name = localStorage.getItem('identity');
+		pass = prompt(`Hello ${name}, tell me your PIN`);
+	} else {
+		name = prompt("Give me a name for you please :)");
+		pass = prompt(`Hello ${name}, and what's your PIN?`);
+	}
+	const data = await (await fetch(`/check-identity?name=${name}&pass=${pass}`)).json();
+	if (data.success) {
+		localStorage.setItem('identity', name);
+	}
+}
 
 function frameHandle(timestamp) {
 	g().stopGame = false;

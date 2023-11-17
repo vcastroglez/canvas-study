@@ -61,7 +61,7 @@ function smart_parse(mixed $value): mixed
 	if(empty($content)) {
 		throw new Exception('File not found: '.$file_path);
 	}
-	if(!$cached_exists) {
+	if(!$cached_exists || $dev_mode) {
 		$rendered_content = str_replace([
 			'{{',
 			'}}'
