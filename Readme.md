@@ -5,9 +5,10 @@
 - ~~Allow multiple opponents~~
 - ~~follow the player with the cam~~
 - ~~background to the canvas~~
-~~- Multiple canvas layers~~
+- ~~Multiple canvas layers~~
 - minimap
-~~- Cookie for user session~~
+- ~~Cookie for user session~~
+- Make position load from last time
 - Calculate projectile_info path on server-side
 - Keep match state on server-side
 - MySQL database for historic and "session"
