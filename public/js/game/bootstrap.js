@@ -1,6 +1,6 @@
 import g from "../conf/globals.js";
 
-const pointsToWin = 20;
+const pointsToWin = 200;
 let frames = 0;
 let lastTimestamp = 0;
 let fpsTimestamp = 0;
@@ -9,6 +9,7 @@ let lastFrames = 0;
 const targetFPSTS = 16;
 
 export default function () {
+	g().connect();
 	g().setUpCanvas();
 	g().drawing.drawWholePageText("Loading...");
 	g().getMCtx().save();
@@ -22,19 +23,25 @@ export default function () {
 }
 
 export async function checkForName() {
-	let name = null;
-	let pass = null;
-	if (localStorage.getItem('identity')) {
-		name = localStorage.getItem('identity');
-		pass = prompt(`Hello ${name}, tell me your PIN`);
-	} else {
-		name = prompt("Give me a name for you please :)");
-		pass = prompt(`Hello ${name}, and what's your PIN?`);
-	}
-	const data = await (await fetch(`/check-identity?name=${name}&pass=${pass}`)).json();
-	if (data.success) {
-		localStorage.setItem('identity', name);
-	}
+	return new Promise(async (success) => {
+		let name = null;
+		let pass = null;
+		if (localStorage.getItem('identity')) {
+			name = localStorage.getItem('identity');
+			pass = prompt(`Hello ${name}, tell me your PIN`);
+		} else {
+			name = prompt("Give me a name for you please :)");
+			pass = prompt(`Hello ${name}, and what's your PIN?`);
+		}
+		const data = await (await fetch(`/check-identity?name=${name}&pass=${pass}`)).json();
+		if (data.success) {
+			localStorage.setItem('identity', name);
+			success(true);
+		} else {
+			success(false);
+		}
+
+	});
 }
 
 function frameHandle(timestamp) {
@@ -56,27 +63,36 @@ function frameHandle(timestamp) {
 	requestAnimationFrame(frameHandle);
 }
 
-function frameDraw() {
-	g().draw(avgFrames);
+let last_ts = 0;
+
+function frameDraw(ts) {
 	if (g().player.points >= pointsToWin || g().stopGame) {
 		g().drawing.drawWholePageText("Felicidades te ganaste un cake comepinga");
-		return;
+		throw new Error("Game finish :)");
 	}
 
-	if (g().server_connected) {
-		const request = {
-			route: 'self-status',
-			data: {
-				position: g().player.position,
-				stats: {
-					size: g().player.size,
-					points: g().player.points,
-				},
-				mouse: g().player.controls.position,
-				proj: g().player.weapon.projectiles
-			}
+	if (!g().server_connected) {
+		throw new Error("No server connection");
+	}
+
+	g().draw(avgFrames);
+	if((ts-last_ts) > 1000 ) {
+		g().drawMinimap();
+		last_ts = ts;
+	}
+
+	const request = {
+		route: 'self-status',
+		data: {
+			position: g().player.position,
+			stats: {
+				size: g().player.size,
+				points: g().player.points,
+			},
+			mouse: g().player.controls.position,
+			proj: g().player.weapon.projectiles
 		}
-
-		g().server.send(JSON.stringify(request));
 	}
+
+	g().server.send(JSON.stringify(request));
 }

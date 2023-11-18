@@ -10,6 +10,7 @@ export const canvas = {
 class Game {
 	mainCanvas = document.getElementById('mainCanvas');
 	levelCanvas = document.getElementById('levelCanvas');
+	miniCanvas = document.getElementById('miniCanvas');
 	player = new Player(true);
 	enemies = new Enemies();
 	drawing = new Drawing();
@@ -18,19 +19,24 @@ class Game {
 	server_connected = false;
 	stopGame = false;
 	selectedCanvas = document.getElementById('mainCanvas');
+	minimap = {
+		width: "15vh",
+		height: "15vh"
+	}
 
 	constructor() {
-		let identity = localStorage.getItem('identity');
-		if (!identity) {
-			identity = 'vla';
-			// alert("You need to set your name :(");
-			// throw new Error("You need username, refresh the page");
-		}
-
-		const url = document.getElementById('WS_URL').content + "/" + identity;
-		this.server = new WebSocket(url);
 		this.viewportWidth = window.visualViewport.width;
 		this.viewportHeight = window.visualViewport.height;
+	}
+
+	connect() {
+		let identity = localStorage.getItem('identity');
+		if (!identity) {
+			alert("You need to set your name :(");
+			throw new Error("You need username, refresh the page");
+		}
+		const url = document.getElementById('WS_URL').content + "/" + identity;
+		this.server = new WebSocket(url);
 	}
 
 	useMain() {
@@ -58,11 +64,16 @@ class Game {
 		this.mainCanvas.getContext('2d').scale(1, 1);
 		this.mainCanvas.setAttribute('width', canvas.width);
 		this.mainCanvas.setAttribute('height', canvas.height);
-		console.log(`xxxxxxxxxxxxxx`);
+
 		this.levelCanvas.style.border = '1px solid black';
 		this.levelCanvas.getContext('2d').scale(1, 1);
 		this.levelCanvas.setAttribute('width', canvas.width);
 		this.levelCanvas.setAttribute('height', canvas.height);
+
+		this.miniCanvas.style.border = '1px solid black';
+		this.miniCanvas.getContext('2d').scale(1, 1);
+		this.miniCanvas.style.width = `min(${this.minimap.width},170px)`;
+		this.miniCanvas.style.height = `min(${this.minimap.height},170px)`;
 	}
 
 	draw(avgFrames) {
@@ -95,6 +106,34 @@ class Game {
 			this.drawing.drawLine(A2, B2, 4, 'rgba(0,0,0,0.2)');
 		}
 		this.useMain();
+	}
+
+	drawMinimap() {
+		const p = this.player.position;
+		const mcW = canvas.width;
+		const mcH = canvas.height;
+
+		const mmW = this.miniCanvas.width;
+		const mmH = this.miniCanvas.height;
+
+		const targetMMX = (p.x / mcW) * mmW;
+		const targetMMH = (p.y / mcH) * mmH;
+
+		const ctx = this.miniCanvas.getContext('2d');
+		ctx.clearRect(0, 0, mmW, mmH);
+		const enemies = this.enemies.enemies.map(item => {
+			return {x: ((item.position.x / mcW) * mmW), y: (item.position.y / mcH) * mmH}
+		});
+		const toDraw = [{x: targetMMX, y: targetMMH}, ...enemies];
+		toDraw.forEach((people, index) => {
+			console.log(people, index);
+			ctx.save();
+			ctx.fillStyle = index == 0 ? '#000000' : '#ff0000';
+			ctx.beginPath();
+			ctx.arc(people.x, people.y, 10, 0, 2 * Math.PI);
+			ctx.fill();
+			ctx.restore();
+		});
 	}
 
 	lerp(A, B, T) {

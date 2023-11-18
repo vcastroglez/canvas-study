@@ -71,7 +71,14 @@ class RedisConnection{
 
 	public function hget(string $key, string $field)
 	{
-		return json_decode($this->redis->hget($key, $field), true);
+		$value = $this->redis->hget($key, $field);
+		return $this->isJson($value) ? json_decode($value, true) : $value;
+	}
+
+	private function isJson($string)
+	{
+		json_decode($string);
+		return json_last_error() === JSON_ERROR_NONE;
 	}
 
 	public function hdel($key, $fields)
@@ -81,7 +88,7 @@ class RedisConnection{
 
 	public function cleanOldUsers(bool $delete_all = false): void
 	{
-		if($delete_all){
+		if($delete_all) {
 			$this->redis->flushall();
 			return;
 		}
@@ -104,6 +111,6 @@ class RedisConnection{
 			$this->hdel($key, ['position']);
 		}
 
-        $this->last_check = $now;
-    }
+		$this->last_check = $now;
+	}
 }

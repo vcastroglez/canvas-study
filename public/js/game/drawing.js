@@ -14,7 +14,6 @@ export default class {
 		let drawY = y.toFixed(0);
 		drawX = drawX>1000?(drawX/1000).toFixed(1)+'k':drawX;
 		drawY = drawY>1000?(drawY/1000).toFixed(1)+'k':drawY;
-		ctx.fillText(`${drawX}:${drawY}`, x+radius+10, y);
 	}
 
 	drawEllipse(x, y, w, h, color, kill = true) {
