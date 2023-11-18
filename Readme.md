@@ -6,7 +6,7 @@
 - ~~follow the player with the cam~~
 - ~~background to the canvas~~
 - ~~Multiple canvas layers~~
-- minimap
+- ~~minimap~~
 - ~~Cookie for user session~~
 - Make position load from last time
 - Calculate projectile_info path on server-side
