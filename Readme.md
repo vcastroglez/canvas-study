@@ -18,3 +18,5 @@
 - ~~drawUI better~~
 - ~~unify player and enemy~~
 - dynamic fields getting for enemies and deleting players
+- main menu
+- proper login
