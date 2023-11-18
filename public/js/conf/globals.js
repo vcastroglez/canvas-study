@@ -122,6 +122,9 @@ class Game {
 		const ctx = this.miniCanvas.getContext('2d');
 		ctx.clearRect(0, 0, mmW, mmH);
 		const enemies = this.enemies.enemies.map(item => {
+			if (!item.position) {
+				return {x: -10, y: -10};
+			}
 			return {x: ((item.position.x / mcW) * mmW), y: (item.position.y / mcH) * mmH}
 		});
 		const toDraw = [{x: targetMMX, y: targetMMH}, ...enemies];
