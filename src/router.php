@@ -5,10 +5,8 @@ use app\Router;
 
 require_once APP_DIR.'/Router.php';
 
-Router::route('/', function(){
-	render(PUBLIC_DIR.'/app.blade.php');
-	die;
-});
+Router::route('/', [AuthController::class,'index']);
+Router::route('/log-in', [AuthController::class,'logIn']);
 
 Router::route('/check-identity',[AuthController::class, 'checkIdentity']);
 

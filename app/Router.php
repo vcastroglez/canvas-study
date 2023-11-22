@@ -2,6 +2,8 @@
 
 namespace app;
 
+use src\Request;
+
 class Router{
 	private static array $routes = [];
 
@@ -13,20 +15,19 @@ class Router{
 
 	public static function resolve(array $request, mixed $extra = null, bool $return = false)
 	{
-		$route = $request['route'] ?? $request['action'] ?: '/';
-		$params = $request;
-		unset($params['route']);
-		$handler = self::$routes[$route] ?? self::$routes["/$route"];
+		$request = new Request($request);
+		$handler = self::$routes[$request->getRoute()];
 		if(is_array($handler)) {
 			$class = $handler[0];
 			$function = $handler[1];
 			$instance = new $class();
 			$handler = $instance->$function(...);
 		}
+
 		if($return) {
-			return $handler($params, $extra);
+			return $handler($request, $extra);
 		} else {
-			echo $handler($params, $extra);
+			echo $handler($request, $extra);
 			die;
 		}
 	}

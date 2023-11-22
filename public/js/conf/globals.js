@@ -129,7 +129,6 @@ class Game {
 		});
 		const toDraw = [{x: targetMMX, y: targetMMH}, ...enemies];
 		toDraw.forEach((people, index) => {
-			console.log(people, index);
 			ctx.save();
 			ctx.fillStyle = index == 0 ? '#000000' : '#ff0000';
 			ctx.beginPath();

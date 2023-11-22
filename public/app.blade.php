@@ -36,6 +36,9 @@
             top: auto;
         }
     </style>
+    <script>
+		var username = '{{ $user->username ?? null }}';
+    </script>
 </head>
 <body id="body" style="padding: 0;margin: 0;border: 0;overflow: hidden">
 <div id="wrapper">

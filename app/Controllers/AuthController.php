@@ -2,7 +2,10 @@
 
 namespace app\Controllers;
 
+use app\Models\User;
+use JetBrains\PhpStorm\NoReturn;
 use src\redis\RedisConnection;
+use src\Request;
 
 class AuthController{
 	protected RedisConnection $redis;
@@ -11,6 +14,37 @@ class AuthController{
 	{
 		$this->redis = RedisConnection::i();
 	}
+
+	/**
+	 * @throws \Exception
+	 */
+	#[NoReturn] public function index(Request $request): void
+	{
+		$user = $request->user();
+		if(empty($user)) {
+			render('login.blade.php');
+		}
+
+		render('app.blade.php', ['user' => $user]);
+	}
+
+	public function logIn(Request $request)
+	{
+		$username = $request->get('username');
+		$password = $request->get('password');
+
+		$user = User::findOne(['username' => $username]);
+		if(empty($user)) {
+			$user = User::create([
+				'username' => $username,
+				'password' => sha1($password)
+			]);
+		}
+
+		$request->logIn($user);
+		render('app.blade.php', ['user' => $user]);
+	}
+
 
 	public function checkIdentity($payload)
 	{

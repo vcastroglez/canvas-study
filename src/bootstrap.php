@@ -2,8 +2,9 @@
 define('ROOT_DIR', dirname(__DIR__));
 require_once ROOT_DIR.'/vendor/autoload.php';
 
-function exception_handler(Throwable $exception): void{
-    echo "Uncaught exception: " , $exception->getMessage(), "\n", $exception->getFile(),':',$exception->getLine(),"\n";
+function exception_handler(Throwable $exception): void
+{
+	echo "Uncaught exception: ", $exception->getMessage(), "\n", $exception->getFile(), ':', $exception->getLine(), "\n", $exception->getTraceAsString(), "\n";
 }
 
 set_exception_handler('exception_handler');

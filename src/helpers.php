@@ -15,9 +15,9 @@ function logger(...$msg): void
 	}
 }
 
-function env(string $name): ?string
+function env(string $name, mixed $default = null): ?string
 {
-	$value = $_ENV[$name] ?? null;
+	$value = $_ENV[$name] ?? $default;
 	return smart_parse($value);
 }
 
@@ -32,14 +32,17 @@ function smart_parse(mixed $value): mixed
 	return $value;
 }
 
-#[NoReturn] function render(string $file_path): void
+#[NoReturn] function render(string $file_path, array $params = []): void
 {
+	$file_path = PUBLIC_DIR."/$file_path";
+
 	if(!file_exists(CACHE_DIR)) {
 		mkdir(CACHE_DIR, 0754);
 	}
 	if(!file_exists(VIEW_DIR)) {
 		mkdir(VIEW_DIR, 0754);
 	}
+
 	$dev_mode = env('APP_ENV') == 'dev';
 
 	$parts = explode('/', $file_path);
@@ -52,6 +55,7 @@ function smart_parse(mixed $value): mixed
 	$cached_path = VIEW_DIR."/$cache_name";
 	$cached_exists = file_exists($cached_path);
 
+	extract($params);
 	if(!$dev_mode && $cached_exists) {
 		require_once $cached_path;
 		die;

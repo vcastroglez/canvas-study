@@ -25,22 +25,13 @@ export default function () {
 export async function checkForName() {
 	return new Promise(async (success) => {
 		let name = null;
-		let pass = null;
-		if (localStorage.getItem('identity')) {
-			name = localStorage.getItem('identity');
-			pass = prompt(`Hello ${name}, tell me your PIN`);
+		if (username !== 'null') {
+			name = username;
 		} else {
-			name = prompt("Give me a name for you please :)");
-			pass = prompt(`Hello ${name}, and what's your PIN?`);
+			throw new Error("How you got here?");
 		}
-		const data = await (await fetch(`/check-identity?name=${name}&pass=${pass}`)).json();
-		if (data.success) {
-			localStorage.setItem('identity', name);
-			success(true);
-		} else {
-			success(false);
-		}
-
+		localStorage.setItem('identity', name);
+		success(true);
 	});
 }
 
@@ -76,7 +67,7 @@ function frameDraw(ts) {
 	}
 
 	g().draw(avgFrames);
-	if((ts-last_ts) > 1000 ) {
+	if ((ts - last_ts) > 1000) {
 		g().drawMinimap();
 		last_ts = ts;
 	}

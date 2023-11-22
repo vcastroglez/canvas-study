@@ -6,7 +6,6 @@ use Socket;
 
 abstract class WebSocketServer{
 
-	protected string $userClass = WebSocketUser::class; // redefine this if you want a custom user class.  The custom user class should inherit from WebSocketUser.
 	protected mixed $maxBufferSize;
 	protected $master;
 	protected array $sockets = array();
@@ -99,7 +98,7 @@ abstract class WebSocketServer{
 			$this->_tick();
 			$this->tick();
 			@socket_select($read, $write, $except, 1);
-			foreach($read as $k=>$socket) {
+			foreach($read as $k => $socket) {
 				if($socket == $this->master) {
 					$client = socket_accept($socket);
 					if($client < 0) {
@@ -156,7 +155,7 @@ abstract class WebSocketServer{
 
 	protected function connect(Socket $client)
 	{
-		$user = new $this->userClass(uniqid('u'), $client);
+		$user = new WebSocketUser(uniqid('u'), $client);
 		$this->users[$user->id] = $user;
 		$this->sockets[$user->id] = $client;
 		$this->connecting($user);
