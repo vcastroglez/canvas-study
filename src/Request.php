@@ -10,7 +10,12 @@ class Request implements \ArrayAccess{
 	protected string $route = "";
 	protected array $cookies = [];
 
-	public function __construct(protected $parameters = [])
+	public Session $session;
+
+	/**
+	 * @throws \Exception
+	 */
+	public function __construct(protected $parameters = [], bool $with_session = true)
 	{
 		$this->route = $this->parameters['route'] ?? $this->parameters['action'] ?: '/';
 		if($this->route[0] != '/') {
@@ -18,7 +23,25 @@ class Request implements \ArrayAccess{
 		}
 		unset($this->parameters['route']);
 		unset($this->parameters['action']);
-		$this->cookies = $_COOKIE;
+
+		if($with_session) {
+			$this->cookies = &$_COOKIE;
+			$uuid = $this->cookies['PHPSESSID'] ?? uniqidReal();
+			$existing = Session::findOne(['uuid' => $uuid]);
+			if(empty($existing)) {
+				$this->session = new Session();
+			} else {
+				$this->session = $existing;
+			}
+			$this->session->uuid = $uuid;
+
+			if($with_session && session_status() != PHP_SESSION_ACTIVE) {
+				session_id($uuid);
+				if(session_status() == PHP_SESSION_NONE) {
+					session_start();
+				}
+			}
+		}
 	}
 
 	public function __get(string $param_name)
@@ -61,27 +84,24 @@ class Request implements \ArrayAccess{
 		return $this->route;
 	}
 
-	public function user(): array|null|User
+	public function user(): null|User
 	{
-		if(empty($this->getSessionUuid())) {
-			return null;
-		}
-
-		$session = Session::findOne(['uuid' => $this->getSessionUuid()]);
-		if(empty($session)) {
-			return null;
-		}
-
-		return $session->getUser();
+		return $this->session->getUser();
 	}
 
 	private function getSessionUuid()
 	{
-		return $this->cookies['session_uuid'] ?? null;
+		return session_id() ?? $this->cookies['PHPSESSID'] ?? null;
 	}
 
 	public function getAll()
 	{
 		return $this->parameters;
+	}
+
+	public function logIn(User $user): void
+	{
+		$this->session->id_user = $user->id;
+		$this->session->save();
 	}
 }

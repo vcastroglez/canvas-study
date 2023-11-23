@@ -25,24 +25,34 @@ class AuthController{
 			render('login.blade.php');
 		}
 
-		render('app.blade.php', ['user' => $user]);
+		render('app.blade.php', ['session' => json_encode($request->session)]);
 	}
 
-	public function logIn(Request $request)
+	/**
+	 * @throws \Exception
+	 */
+	public function logIn(Request $request): void
 	{
+		if(!empty($request->user())) {
+			redirect("/");
+		}
 		$username = $request->get('username');
-		$password = $request->get('password');
+		$password = sha1($request->get('password'));
 
-		$user = User::findOne(['username' => $username]);
+		$user = User::findOne([
+			'username' => $username,
+			'password' => $password
+		]);
+
 		if(empty($user)) {
 			$user = User::create([
 				'username' => $username,
-				'password' => sha1($password)
+				'password' => $password
 			]);
 		}
 
 		$request->logIn($user);
-		render('app.blade.php', ['user' => $user]);
+		redirect("/");
 	}
 
 

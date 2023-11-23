@@ -37,7 +37,7 @@
         }
     </style>
     <script>
-		var username = '{{ $user->username ?? null }}';
+		const session = JSON.parse('{{ $session }}');
     </script>
 </head>
 <body id="body" style="padding: 0;margin: 0;border: 0;overflow: hidden">

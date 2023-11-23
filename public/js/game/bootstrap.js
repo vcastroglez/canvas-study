@@ -25,12 +25,11 @@ export default function () {
 export async function checkForName() {
 	return new Promise(async (success) => {
 		let name = null;
-		if (username !== 'null') {
-			name = username;
+		if (session.uuid !== null) {
+			name = session.uuid;
 		} else {
 			throw new Error("How you got here?");
 		}
-		localStorage.setItem('identity', name);
 		success(true);
 	});
 }

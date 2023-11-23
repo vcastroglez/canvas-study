@@ -8,7 +8,8 @@
 	"ext-pcntl": "*",
 	"ext-sockets": "*",
     "vlucas/phpdotenv": "^5.5",
-	"ext-pdo": "*"
+	"ext-pdo": "*",
+	"ext-http": "*"
   },
   "autoload": {
 	"psr-4": {

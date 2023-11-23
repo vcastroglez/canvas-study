@@ -13,9 +13,12 @@ class Router{
 		self::$routes[$route] = $callable;
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public static function resolve(array $request, mixed $extra = null, bool $return = false)
 	{
-		$request = new Request($request);
+		$request = new Request($request, !$return);
 		$handler = self::$routes[$request->getRoute()];
 		if(is_array($handler)) {
 			$class = $handler[0];

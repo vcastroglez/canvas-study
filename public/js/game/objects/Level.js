@@ -61,7 +61,7 @@ export default class {
 
 	drawUI(avgFrames) {
 		const ctx = g().getCtx();
-		g().drawing.drawText("Points: " + g().player.points, 36, 10, 50, 'red');
+		g().drawing.drawText(`${session.user.username}: ${g().player.points}`, 36, 10, 50, 'red');
 		g().drawing.drawText("FPS: " + avgFrames, 36, window.innerWidth - 200, 50, 'red');
 		g().enemies.points.forEach((points, index) => {
 			g().drawing.drawText(`enemy ${index + 1}: ${points}`, 20, 10, ((index + 2) * 40) + 10, 'red');

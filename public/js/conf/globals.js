@@ -88,7 +88,6 @@ class Game {
 
 		this.levelCanvas.style.left = `${xPos}px`;
 		this.levelCanvas.style.top = `${yPos}px`;
-		// console.log(this.levelCanvas.style.top = this.levelCanvas.style.top + 1);
 		this.player.draw();
 		this.enemies.draw();
 
