@@ -35,7 +35,7 @@ class Request implements \ArrayAccess{
 			}
 			$this->session->uuid = $uuid;
 
-			if($with_session && session_status() != PHP_SESSION_ACTIVE) {
+			if(session_status() != PHP_SESSION_ACTIVE) {
 				session_id($uuid);
 				if(session_status() == PHP_SESSION_NONE) {
 					session_start();

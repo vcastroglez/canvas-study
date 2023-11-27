@@ -66,6 +66,8 @@ class Model extends \stdClass implements \ArrayAccess, \JsonSerializable{
 	{
 		if(is_array($params)) {
 			return self::getByCondition($params);
+		} else if(is_numeric($params)){
+			return self::findOne($params);
 		}
 		dd("not implemented");//tovla MODE_GENERATOR
 	}

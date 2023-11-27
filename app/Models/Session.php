@@ -4,10 +4,16 @@ namespace app\Models;
 
 use src\Model;
 
+/**
+ * @property int id_user
+ */
 class Session extends Model{
 
-	public function getUser()
+	public function getUser(): ?User
 	{
+		if(empty($this->id_user)) {
+			return null;
+		}
 		return User::findOne($this->id_user);
 	}
 
