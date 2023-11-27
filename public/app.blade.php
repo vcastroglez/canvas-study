@@ -38,6 +38,7 @@
     </style>
     <script>
 		const session = JSON.parse('{{ $session }}');
+		const position = JSON.parse('{{ $position }}');
     </script>
 </head>
 <body id="body" style="padding: 0;margin: 0;border: 0;overflow: hidden">

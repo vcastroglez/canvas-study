@@ -2,6 +2,7 @@ import Player from "../game/players/Player.js";
 import Drawing from "../game/drawing.js";
 import Level from "../game/objects/Level.js";
 import Enemies from "../game/players/Enemies.js";
+import player from "../game/players/Player.js";
 
 export const canvas = {
 	width: 5000, height: 5000
@@ -30,7 +31,7 @@ class Game {
 	}
 
 	connect() {
-		let identity = localStorage.getItem('identity');
+		let identity = session.id_user;
 		if (!identity) {
 			alert("You need to set your name :(");
 			throw new Error("You need username, refresh the page");
@@ -38,7 +39,6 @@ class Game {
 		const url = document.getElementById('WS_URL').content + "/" + identity;
 		this.server = new WebSocket(url);
 	}
-
 	useMain() {
 		this.selectedCanvas = document.getElementById('mainCanvas');
 	}
@@ -74,6 +74,11 @@ class Game {
 		this.miniCanvas.getContext('2d').scale(1, 1);
 		this.miniCanvas.style.width = `min(${this.minimap.width},170px)`;
 		this.miniCanvas.style.height = `min(${this.minimap.height},170px)`;
+
+		if(position?.x && position?. y){
+			this.player.position.x = position.x;
+			this.player.position.y = position.y;
+		}
 	}
 
 	draw(avgFrames) {

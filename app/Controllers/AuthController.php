@@ -25,7 +25,13 @@ class AuthController{
 			render('login.blade.php');
 		}
 
-		render('app.blade.php', ['session' => json_encode($request->session)]);
+		$user_key = md5($user->id);
+		$position = RedisConnection::i()->hget($user_key, 'position') ?? [];
+
+		render('app.blade.php', [
+			'session'  => json_encode($request->session),
+			'position' => json_encode($position)
+		]);
 	}
 
 	/**
