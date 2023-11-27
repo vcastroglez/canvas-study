@@ -43,9 +43,10 @@
 </head>
 <body id="body" style="padding: 0;margin: 0;border: 0;overflow: hidden">
 <div id="wrapper">
-    <canvas id="mainCanvas" class="canvas-layer" width="5000" height="5000"></canvas>
-    <canvas id="levelCanvas" class="canvas-layer fixed" width="5000" height="5000"></canvas>
-    <canvas id="miniCanvas" class="canvas-layer fixed" width="300" height="300"></canvas>
+    <canvas id="mainCanvas" class="canvas-layer" width="5000" height="5000" style="z-index: 3"></canvas>
+    <canvas id="enemiesCanvas" class="canvas-layer" width="5000" height="5000" style="z-index: 2"></canvas>
+    <canvas id="levelCanvas" class="canvas-layer fixed" width="5000" height="5000" style="z-index: 0"></canvas>
+    <canvas id="miniCanvas" class="canvas-layer fixed" width="300" height="300" style="z-index: 1;"></canvas>
 </div>
 <script type="module" src="js/app.js" defer></script>
 </body>

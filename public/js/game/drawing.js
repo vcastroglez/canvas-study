@@ -1,8 +1,10 @@
 import g from "../conf/globals.js";
 
 export default class {
-	drawCircle(x, y, radius, color) {
-		let ctx = g().getCtx();
+	drawCircle(x, y, radius, color, ctx = null) {
+		if (!ctx) {
+			ctx = g().getCtx();
+		}
 		ctx.beginPath();
 		ctx.arc(x, y, radius, 0, 2 * Math.PI);
 		ctx.fillStyle = color;
@@ -12,8 +14,8 @@ export default class {
 		ctx.fillStyle = 'black';
 		let drawX = x.toFixed(0);
 		let drawY = y.toFixed(0);
-		drawX = drawX>1000?(drawX/1000).toFixed(1)+'k':drawX;
-		drawY = drawY>1000?(drawY/1000).toFixed(1)+'k':drawY;
+		drawX = drawX > 1000 ? (drawX / 1000).toFixed(1) + 'k' : drawX;
+		drawY = drawY > 1000 ? (drawY / 1000).toFixed(1) + 'k' : drawY;
 	}
 
 	drawEllipse(x, y, w, h, color, kill = true) {
@@ -62,8 +64,8 @@ export default class {
 	drawLine(A, B, size, color) {
 		const ctx = g().getCtx();
 		ctx.beginPath();
-		ctx.moveTo(A.x,A.y);
-		ctx.lineTo(B.x,B.y);
+		ctx.moveTo(A.x, A.y);
+		ctx.lineTo(B.x, B.y);
 		ctx.strokeWidth = `${size}px`;
 		ctx.strokeStyle = `${color}`;
 		ctx.stroke();

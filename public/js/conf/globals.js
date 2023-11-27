@@ -2,7 +2,6 @@ import Player from "../game/players/Player.js";
 import Drawing from "../game/drawing.js";
 import Level from "../game/objects/Level.js";
 import Enemies from "../game/players/Enemies.js";
-import player from "../game/players/Player.js";
 
 export const canvas = {
 	width: 5000, height: 5000
@@ -11,6 +10,7 @@ export const canvas = {
 class Game {
 	mainCanvas = document.getElementById('mainCanvas');
 	levelCanvas = document.getElementById('levelCanvas');
+	enemiesCanvas = document.getElementById('enemiesCanvas');
 	miniCanvas = document.getElementById('miniCanvas');
 	player = new Player(true);
 	enemies = new Enemies();
@@ -39,6 +39,7 @@ class Game {
 		const url = document.getElementById('WS_URL').content + "/" + identity;
 		this.server = new WebSocket(url);
 	}
+
 	useMain() {
 		this.selectedCanvas = document.getElementById('mainCanvas');
 	}
@@ -59,6 +60,10 @@ class Game {
 		return this.levelCanvas.getContext('2d');
 	}
 
+	getECtx() {
+		return this.enemiesCanvas.getContext('2d');
+	}
+
 	setUpCanvas() {
 		this.mainCanvas.style.border = '1px solid black';
 		this.mainCanvas.getContext('2d').scale(1, 1);
@@ -70,22 +75,40 @@ class Game {
 		this.levelCanvas.setAttribute('width', canvas.width);
 		this.levelCanvas.setAttribute('height', canvas.height);
 
+		this.enemiesCanvas.style.border = '1px solid black';
+		this.enemiesCanvas.getContext('2d').scale(1, 1);
+		this.enemiesCanvas.setAttribute('width', canvas.width);
+		this.enemiesCanvas.setAttribute('height', canvas.height);
+
 		this.miniCanvas.style.border = '1px solid black';
 		this.miniCanvas.getContext('2d').scale(1, 1);
 		this.miniCanvas.style.width = `min(${this.minimap.width},170px)`;
 		this.miniCanvas.style.height = `min(${this.minimap.height},170px)`;
 
-		if(position?.x && position?. y){
+		if (position?.x && position?.y) {
 			this.player.position.x = position.x;
 			this.player.position.y = position.y;
 		}
 	}
 
-	draw(avgFrames) {
+	enemies_ts = 0;
+	game_ts = 0;
+	mini_ts = 0;
+	frames_ts = 0;
+	frames_memory = 0;
+
+	draw(ts) {
+		const avgFrames = 1000 / (ts - this.frames_ts);
+		this.frames_ts = ts;
+
+		if (avgFrames && (ts - this.game_ts > 300) ) {
+			this.game_ts = ts;
+			this.frames_memory = avgFrames.toFixed();
+		}
 		const x = this.player.position.x - this.viewportWidth;
 		const y = this.player.position.y - this.viewportHeight;
 		this.getMCtx().clearRect(0, 0, this.viewportWidth, this.viewportHeight);
-		this.level.draw(avgFrames);
+		this.level.draw(this.frames_memory);
 		this.getMCtx().save();
 		const xPos = -this.player.position.x + (window.visualViewport.width * 0.5);
 		const yPos = -this.player.position.y + (window.visualViewport.height * 0.5);
@@ -93,8 +116,21 @@ class Game {
 
 		this.levelCanvas.style.left = `${xPos}px`;
 		this.levelCanvas.style.top = `${yPos}px`;
+
+		this.enemiesCanvas.style.left = `${xPos}px`;
+		this.enemiesCanvas.style.top = `${yPos}px`;
+
 		this.player.draw();
-		this.enemies.draw();
+
+		if (ts - this.enemies_ts > 70) {
+			this.enemies.draw();
+			this.enemies_ts = ts;
+		}
+
+		if ((ts - this.mini_ts) > 3000) {
+			this.drawMinimap();
+			this.mini_ts = ts;
+		}
 
 		this.getMCtx().restore();
 	}

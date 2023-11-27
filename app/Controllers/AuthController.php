@@ -27,6 +27,7 @@ class AuthController{
 
 		$user_key = md5($user->id);
 		$position = RedisConnection::i()->hget($user_key, 'position') ?? [];
+		RedisConnection::i()->hset($user_key, 'name', $user->username);
 
 		render('app.blade.php', [
 			'session'  => json_encode($request->session),

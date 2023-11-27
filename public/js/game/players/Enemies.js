@@ -19,7 +19,7 @@ export default class {
 		let isInBound = false;
 		for (let i = 0; i < this.enemies.length; i++) {
 			const enemy = this.enemies[i];
-			if(!enemy.position){
+			if (!enemy.position) {
 				return;
 			}
 			const c1 = x - enemy.position.x;
@@ -37,7 +37,7 @@ export default class {
 
 	drawEnemy(enemy) {
 		if (!enemy || !enemy.position) return;
-		g().drawing.drawCircle(enemy.position.x, enemy.position.y, enemy.info.size, 'red');
+		g().drawing.drawCircle(enemy.position.x, enemy.position.y, enemy.info.size, 'red', g().getECtx());
 	}
 
 	calculatePoints() {

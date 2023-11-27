@@ -1,11 +1,6 @@
 import g from "../conf/globals.js";
 
 const pointsToWin = 200;
-let frames = 0;
-let lastTimestamp = 0;
-let fpsTimestamp = 0;
-let avgFrames = 0;
-let lastFrames = 0;
 const targetFPSTS = 16;
 
 export default function () {
@@ -36,24 +31,9 @@ export async function checkForName() {
 
 function frameHandle(timestamp) {
 	g().stopGame = false;
-	if (timestamp - lastTimestamp > targetFPSTS) {
-		frames++;
-		if (frames > 100000) {
-			frames = lastFrames = 0;
-		}
-		if (timestamp - fpsTimestamp > 1000) {
-			avgFrames = frames - lastFrames;
-			lastFrames = frames;
-			fpsTimestamp = timestamp;
-		}
-		frameDraw(timestamp);
-		lastTimestamp = timestamp;
-	}
-
+	frameDraw(timestamp);
 	requestAnimationFrame(frameHandle);
 }
-
-let last_ts = 0;
 
 function frameDraw(ts) {
 	if (g().player.points >= pointsToWin || g().stopGame) {
@@ -65,11 +45,7 @@ function frameDraw(ts) {
 		throw new Error("No server connection");
 	}
 
-	g().draw(avgFrames);
-	if ((ts - last_ts) > 1000) {
-		g().drawMinimap();
-		last_ts = ts;
-	}
+	g().draw(ts);
 
 	const request = {
 		route: 'self-status',

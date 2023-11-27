@@ -8,10 +8,10 @@
 - ~~Multiple canvas layers~~
 - ~~minimap~~
 - ~~Cookie for user session~~
-- Make position load from last time
+- ~~Make position load from last time~~
 - Calculate projectile_info path on server-side
 - Keep match state on server-side
-- MySQL database for historic and "session"
+- ~~MySQL database for historic and "session"~~
 - ~~Better encapsulation and abstraction in JS part~~
 - ~~WsManager~~
 - ~~Refactor file structure and position~~
@@ -19,4 +19,5 @@
 - ~~unify player and enemy~~
 - dynamic fields getting for enemies and deleting players
 - main menu
-- proper login
+- ~~proper login~~
+- make the user identity linked to his username and password, or something else unique
