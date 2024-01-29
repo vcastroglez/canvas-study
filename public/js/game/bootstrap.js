@@ -46,19 +46,4 @@ function frameDraw(ts) {
 	}
 
 	g().draw(ts);
-
-	const request = {
-		route: 'self-status',
-		data: {
-			position: g().player.position,
-			stats: {
-				size: g().player.size,
-				points: g().player.points,
-			},
-			mouse: g().player.controls.position,
-			proj: g().player.weapon.projectiles
-		}
-	}
-
-	g().server.send(JSON.stringify(request));
 }

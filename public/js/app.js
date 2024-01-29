@@ -20,6 +20,7 @@ checkForName().then(r => {
 // Connection opened
 	g().server.addEventListener("open", (event) => {
 		g().server_connected = true;
+		socketThread();
 	});
 	g().server.addEventListener("close", (event) => {
 		g().server_connected = false;
@@ -31,3 +32,23 @@ checkForName().then(r => {
 		resolve(data);
 	});
 });
+
+function socketThread(){
+	const request = {
+		route: 'self-status',
+		data: {
+			position: g().player.position,
+			stats: {
+				size: g().player.size,
+				points: g().player.points,
+			},
+			mouse: g().player.controls.position,
+			proj: g().player.weapon.projectiles
+		}
+	}
+
+	g().server.send(JSON.stringify(request));
+	if(g().server_connected) {
+		setTimeout(socketThread,500);
+	}
+}
