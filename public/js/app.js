@@ -28,7 +28,6 @@ checkForName().then(r => {
 // Listen for messages
 	g().server.addEventListener("message", (event) => {
 		const data = JSON.parse(event.data);
-		console.log(`Message received: ${data.route}`);
 		resolve(data);
 	});
 });
