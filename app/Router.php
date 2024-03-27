@@ -9,8 +9,7 @@ class Router{
 
 	public static function route(string $route, mixed $handler)
 	{
-		$callable = $handler;
-		self::$routes[$route] = $callable;
+		self::$routes[$route] = $handler;
 	}
 
 	/**

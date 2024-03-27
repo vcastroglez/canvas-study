@@ -6,7 +6,8 @@ use app\CentralServer;
 use Carbon\Carbon;
 use src\redis\RedisConnection;
 
-class PlayerStatusController{
+class PlayerStatusController
+{
 	protected RedisConnection $redis;
 
 	public function __construct()
@@ -20,8 +21,8 @@ class PlayerStatusController{
 		$data = $payload['data'];
 		$user = $payload['user'];
 		$this->redis->hset($user->id, 'position', json_encode([
-			'x' => (int)$data['position']['x'],
-			'y' => (int)$data['position']['y']
+			'x' => (int) $data['position']['x'],
+			'y' => (int) $data['position']['y']
 		]));
 		$this->redis->hset($user->id, 'info', json_encode($data['stats']));
 		$this->redis->hset($user->id, 'mouse', json_encode($data['mouse']));

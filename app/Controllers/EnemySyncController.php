@@ -36,7 +36,7 @@ class EnemySyncController{
 		}
 
 		$ws_server->send($user, [
-			'action' => 'enemies',
+			'route' => 'enemies',
 			'data'   => $to_send
 		]);
 	}

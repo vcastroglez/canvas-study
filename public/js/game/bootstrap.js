@@ -14,7 +14,10 @@ export default function () {
 	g().getMCtx().restore();
 	g().getLCtx().restore();
 	g().drawBackground();
-	setTimeout(frameHandle, 1000);
+	wsServerConnected().then(() => {
+		frameHandle();
+		socketThread();
+	})
 }
 
 export async function checkForName() {
@@ -27,6 +30,41 @@ export async function checkForName() {
 		}
 		success(true);
 	});
+}
+
+async function socketThread() {
+	const request = {
+		route: 'self-status',
+		data: {
+			position: g().player.position,
+			stats: {
+				size: g().player.size,
+				points: g().player.points,
+			},
+			mouse: g().player.controls.position,
+			proj: g().player.weapon.projectiles
+		}
+	}
+
+	g().server.send(JSON.stringify(request));
+	await g().sleep(300);
+	if (g().server_connected) socketThread();
+}
+
+async function wsServerConnected() {
+	return new Promise(async (resolve, reject) => {
+
+		let connected = false;
+		while (!connected) {
+			console.log(`WS server waiting`);
+			if (g().server_connected) {
+				console.log(`WS Server connected`);
+				connected = true;
+				resolve();
+			}
+			await g().sleep(500);
+		}
+	})
 }
 
 function frameHandle(timestamp) {

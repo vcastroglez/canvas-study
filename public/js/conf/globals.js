@@ -97,11 +97,15 @@ class Game {
 	frames_ts = 0;
 	frames_memory = 0;
 
+	sleep(delay) {
+		return new Promise((resolve) => setTimeout(resolve, delay))
+	}
+
 	draw(ts) {
 		const avgFrames = 1000 / (ts - this.frames_ts);
 		this.frames_ts = ts;
 
-		if (avgFrames && (ts - this.game_ts > 300) ) {
+		if (avgFrames && (ts - this.game_ts > 300)) {
 			this.game_ts = ts;
 			this.frames_memory = avgFrames.toFixed();
 		}
