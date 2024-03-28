@@ -1,4 +1,5 @@
 ## TODO
+- Find out WTF is slow on mobile
 - ~~Draw methods on objects~~
 - ~~Player have a tracker~~
 - ~~Unify WS communication (ws msg queue)~~
@@ -20,4 +21,4 @@
 - dynamic fields getting for enemies and deleting players
 - main menu
 - ~~proper login~~
-- make the user identity linked to his username and password, or something else unique
+- ~~make the user identity linked to his username and password, or something else unique~~
