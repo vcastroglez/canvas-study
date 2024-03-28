@@ -22,3 +22,6 @@
 - main menu
 - ~~proper login~~
 - ~~make the user identity linked to his username and password, or something else unique~~
+- clear enemies animation trace
+- faster enemy status
+- only self report after enemy event
